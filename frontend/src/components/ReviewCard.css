@@ -1,0 +1,34 @@
+.review-card {
+  background: var(--bg-light);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.review-author {
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.review-text {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.review-date {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}

@@ -1,0 +1,104 @@
+.custom-lists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.create-list-form {
+  margin-bottom: 30px;
+}
+
+.books-select {
+  min-height: 150px;
+  padding: 10px;
+}
+
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.custom-list-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.list-header h3 {
+  color: var(--text-color);
+}
+
+.list-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.list-books ul {
+  list-style: none;
+  padding: 0;
+}
+
+.list-books li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.list-books li:last-child {
+  border-bottom: none;
+}
+
+.list-books a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.list-books a:hover {
+  text-decoration: underline;
+}
+
+.book-author {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.no-books {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.edit-mode {
+  margin-top: 15px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+

@@ -28,3 +28,67 @@
   outline: none;
   border-color: var(--primary-color);
 }
+
+/* Custom genre dropdown styles */
+.genre-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.genre-toggle {
+  padding: 8px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background: var(--surface, #fff);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.genre-toggle:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+.genre-toggle .caret {
+  margin-left: 8px;
+  font-size: 12px;
+}
+.genre-menu {
+  position: absolute;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  z-index: 9999;
+}
+.genre-search {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+.genre-search input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+.genre-list {
+  max-height: 220px;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+.genre-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.genre-item:hover {
+  background: rgba(0,0,0,0.03);
+}
+.genre-item.selected {
+  background: rgba(0,0,0,0.06);
+  font-weight: 600;
+}
+.genre-item.highlighted {
+  background: rgba(0,0,0,0.08);
+}

@@ -3,7 +3,7 @@ import Book from '../models/Book.js';
 // GET /api/books - with search and filters
 export const getBooks = async (req, res) => {
   try {
-    const { search, genre, year } = req.query;
+    const { search, genre, year, publicationYear } = req.query;
     const query = {};
     if (search) {
       query.$or = [
@@ -12,7 +12,11 @@ export const getBooks = async (req, res) => {
       ];
     }
     if (genre) query.genre = genre;
-    if (year) query.publicationYear = parseInt(year, 10);
+    const y = year ?? publicationYear;
+    if (y !== undefined && y !== '') {
+      const parsed = parseInt(y, 10);
+      if (!Number.isNaN(parsed)) query.publicationYear = parsed;
+    }
     const books = await Book.find(query).sort({ createdAt: -1 });
     res.json(books);
   } catch (err) {

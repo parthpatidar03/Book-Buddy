@@ -28,6 +28,12 @@ export const createCustomList = async (req, res) => {
 // PUT /api/custom-lists/:id (update: name, books)
 export const updateCustomList = async (req, res) => {
   try {
+    /**
+     * Extracts the custom list name and associated books from the request body.
+     *  CustomListRequestBody
+     *  name - The name of the custom list.
+     *  books - The array of books to be included in the custom list.
+     */
     const { name, books } = req.body;
     const list = await CustomList.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },

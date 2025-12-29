@@ -26,6 +26,18 @@
   gap: 20px;
 }
 
+.nav-button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  background: var(--surface, #fff);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.nav-button:hover {
+  background: rgba(0,0,0,0.03);
+}
+
 .nav a {
   text-decoration: none;
   color: var(--text-color);

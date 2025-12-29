@@ -26,23 +26,26 @@
   display: flex;
   flex-direction: column;
 }
-
 .list-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-color);
+  gap: 12px;
 }
 
 .list-header h3 {
   color: var(--text-color);
+  margin: 0;
+  font-size: 20px;
 }
 
 .list-actions {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .btn-sm {
@@ -86,6 +89,56 @@
 
 .edit-mode {
   margin-top: 15px;
+}
+
+.custom-list-card.card {
+  padding: 18px;
+}
+
+.inline-list-name {
+  font-size: 20px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+
+.list-header > .inline-list-name {
+  margin-right: 12px;
+}
+
+.books-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface, #fff);
+}
+.book-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.book-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.edit-mode .btn-primary {
+  margin-top: 12px;
+}
+.inline-list-name {
+  font-size: 20px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
 }
 
 .empty-state {

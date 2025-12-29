@@ -15,9 +15,25 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="header-content">
-          <Link to="/" className="logo">
-            📚 Book Buddy
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              className="nav-button"
+              onClick={() => navigate(-1)}
+              aria-label="Go to previous page"
+            >
+              ◀ Prev
+            </button>
+            <Link to="/" className="logo" aria-label="Home">
+              📚 Book Buddy
+            </Link>
+            <button
+              className="nav-button"
+              onClick={() => navigate('/')}
+              aria-label="Go to dashboard"
+            >
+              Home ▶
+            </button>
+          </div>
           <nav className="nav">
             {user ? (
               <>

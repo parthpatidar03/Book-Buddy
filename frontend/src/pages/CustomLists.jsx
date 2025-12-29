@@ -65,11 +65,10 @@ const CustomLists = () => {
     }
   };
 
-  const handleUpdateList = async (listId, updatedBooks) => {
+  const handleUpdateList = async (listId, updatedName, updatedBooks) => {
     try {
-      const list = lists.find((l) => l._id === listId);
       await customListsAPI.update(listId, {
-        name: list.name,
+        name: updatedName,
         books: updatedBooks,
       });
       fetchLists();
@@ -110,23 +109,24 @@ const CustomLists = () => {
             </div>
             <div className="form-group">
               <label>Select Books:</label>
-              <select
-                multiple
-                value={selectedBooks}
-                onChange={(e) =>
-                  setSelectedBooks(
-                    Array.from(e.target.selectedOptions, (option) => option.value)
-                  )
-                }
-                className="books-select"
-              >
+              <div className="books-checkboxes">
                 {books.map((book) => (
-                  <option key={book._id} value={book._id}>
+                  <label key={book._id} className="book-checkbox">
+                    <input
+                      type="checkbox"
+                      value={book._id}
+                      checked={selectedBooks.includes(book._id)}
+                      onChange={(e) => {
+                        const id = book._id;
+                        setSelectedBooks((prev) =>
+                          e.target.checked ? [...prev, id] : prev.filter((x) => x !== id)
+                        );
+                      }}
+                    />
                     {book.title} by {book.author}
-                  </option>
+                  </label>
                 ))}
-              </select>
-              <small>Hold Ctrl/Cmd to select multiple books</small>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary">
               Create List
@@ -167,19 +167,36 @@ const CustomListCard = ({ list, allBooks, onDelete, onUpdate }) => {
   const [selectedBooks, setSelectedBooks] = useState(
     list.books.map((book) => book._id)
   );
+  const [name, setName] = useState(list.name);
 
   const handleSave = () => {
-    onUpdate(list._id, selectedBooks);
+    onUpdate(list._id, name, selectedBooks);
     setIsEditing(false);
   };
 
   return (
     <div className="custom-list-card card">
       <div className="list-header">
-        <h3>{list.name}</h3>
+        {isEditing ? (
+          <input
+            className="inline-list-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        ) : (
+          <h3>{list.name}</h3>
+        )}
         <div className="list-actions">
           <button
-            onClick={() => setIsEditing(!isEditing)}
+            onClick={() => {
+              if (!isEditing) {
+                setName(list.name);
+                setSelectedBooks(list.books.map((b) => b._id));
+              }
+              setIsEditing(!isEditing);
+            }}
             className="btn btn-sm"
           >
             {isEditing ? 'Cancel' : 'Edit'}
@@ -197,22 +214,24 @@ const CustomListCard = ({ list, allBooks, onDelete, onUpdate }) => {
         <div className="edit-mode">
           <div className="form-group">
             <label>Select Books:</label>
-            <select
-              multiple
-              value={selectedBooks}
-              onChange={(e) =>
-                setSelectedBooks(
-                  Array.from(e.target.selectedOptions, (option) => option.value)
-                )
-              }
-              className="books-select"
-            >
+            <div className="books-checkboxes">
               {allBooks.map((book) => (
-                <option key={book._id} value={book._id}>
+                <label key={book._id} className="book-checkbox">
+                  <input
+                    type="checkbox"
+                    value={book._id}
+                    checked={selectedBooks.includes(book._id)}
+                    onChange={(e) => {
+                      const id = book._id;
+                      setSelectedBooks((prev) =>
+                        e.target.checked ? [...prev, id] : prev.filter((x) => x !== id)
+                      );
+                    }}
+                  />
                   {book.title} by {book.author}
-                </option>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
           <button onClick={handleSave} className="btn btn-primary btn-sm">
             Save Changes

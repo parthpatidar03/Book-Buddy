@@ -37,7 +37,12 @@ const Header = () => {
           <nav className="nav">
             {user ? (
               <>
-                <Link to="/" className="nav-link">Books</Link>
+                <Link to="/" className="nav-link">
+                  <span className="nav-icon" aria-hidden>
+                    <img src="https://cdn-icons-png.flaticon.com/128/3145/3145765.png" alt="Books" />
+                  </span>
+                  Books
+                </Link>
                 <Link to="/reading-list" className="nav-link">Reading List</Link>
                 <Link to="/my-reviews" className="nav-link">My Reviews</Link>
                 <Link to="/custom-lists" className="nav-link">Custom Lists</Link>

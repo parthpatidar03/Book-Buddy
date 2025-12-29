@@ -52,17 +52,24 @@ const MyReviews = () => {
         <div className="reviews-container">
           {reviews.map((review) => (
             <div key={review._id} className="my-review-card">
-              <Link to={`/book/${review.book._id}`} className="review-book-link">
-                <h3>{review.book.title}</h3>
-                <p>by {review.book.author}</p>
-              </Link>
+              {review.book && review.book._id ? (
+                <Link to={`/book/${review.book._id}`} className="review-book-link">
+                  <h3>{review.book.title}</h3>
+                  <p>by {review.book.author}</p>
+                </Link>
+              ) : (
+                <div className="review-book-link">
+                  <h3>Book removed</h3>
+                  <p>—</p>
+                </div>
+              )}
               <div className="review-content">
                 <RatingStars rating={review.rating} readonly />
                 {review.reviewText && (
                   <p className="review-text">{review.reviewText}</p>
                 )}
                 <p className="review-date">
-                  Reviewed on {new Date(review.createdAt).toLocaleDateString()}
+                  Reviewed on {new Date(review.createdAt ?? Date.now()).toLocaleDateString()}
                 </p>
               </div>
               <button

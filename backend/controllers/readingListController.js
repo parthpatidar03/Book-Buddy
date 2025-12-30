@@ -15,8 +15,16 @@ export const getReadingList = async (req, res) => {
 // POST /api/reading-list (protected)
 export const addToReadingList = async (req, res) => {
   try {
-    const { book, status } = req.body;
-    const item = await ReadingList.create({ user: req.user._id, book, status });
+    const { book, status, finishDate } = req.body;
+    const data = { user: req.user._id, book, status };
+    
+    if (finishDate) {
+      data.finishDate = finishDate;
+    } else if (status === 'complete') {
+      data.finishDate = Date.now();
+    }
+
+    const item = await ReadingList.create(data);
     await item.populate('book');
     res.status(201).json(item);
   } catch (err) {
@@ -28,10 +36,25 @@ export const addToReadingList = async (req, res) => {
 // PUT /api/reading-list/:id (protected)
 export const updateReadingStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, finishDate } = req.body;
+    const updateData = { status };
+    
+    // If finishDate is provided (even if null), update it.
+    // This allows users to manually set the date they finished a book.
+    if (finishDate !== undefined) {
+      updateData.finishDate = finishDate;
+    } else if (status === 'complete') {
+      // Auto-set finishDate to now if status is complete and no date provided
+      // But only if it doesn't already have a finishDate (we'd need to check, but for now let's just default to now if switching to complete)
+      // Actually, findOneAndUpdate doesn't let us check previous state easily in one go without a pre-fetch.
+      // Let's just set it if not provided. Use $setOnInsert style logic? No, this is an update.
+      // Simple logic: If switching to complete and no date given, set to now.
+      updateData.finishDate = Date.now();
+    }
+    
     const item = await ReadingList.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
-      { status },
+      updateData,
       { new: true }
     ).populate('book');
     if (!item) return res.status(404).json({ message: 'Reading list item not found' });
@@ -191,6 +214,69 @@ export const exportReadingList = async (req, res) => {
     } else {
       res.status(400).json({ message: 'Invalid format' });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// GET /api/reading-list/:id/notes/export (protected)
+export const exportBookNotes = async (req, res) => {
+  try {
+    const item = await ReadingList.findOne({ _id: req.params.id, user: req.user._id })
+      .populate('book');
+
+    if (!item) {
+      return res.status(404).json({ message: 'Reading list item not found' });
+    }
+
+    if (!item.notes || item.notes.length === 0) {
+      return res.status(400).json({ message: 'No notes found for this book' });
+    }
+
+    const PDFDocument = (await import('pdfkit')).default;
+    const doc = new PDFDocument({ margin: 50 });
+
+    res.header('Content-Type', 'application/pdf');
+    res.attachment(`${item.book.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_notes.pdf`);
+    
+    doc.pipe(res);
+
+    // Header
+    doc.fontSize(20).font('Helvetica-Bold').text(item.book.title, { align: 'center' });
+    doc.fontSize(12).font('Helvetica-Oblique').text(`by ${item.book.author}`, { align: 'center' });
+    doc.moveDown();
+    doc.fontSize(10).font('Helvetica').text(`Notes Exported on ${new Date().toLocaleDateString()}`, { align: 'center', color: 'grey' });
+    doc.moveDown(2);
+
+    // Notes
+    doc.fillColor('black');
+    
+    item.notes.forEach((note, index) => {
+      // Note Box Background (Simulated with rectangle)
+      const startY = doc.y;
+      
+      // Note Content
+      doc.fontSize(12).font('Helvetica').text(note.text, { align: 'left' });
+      doc.moveDown(0.5);
+      
+      // Metadata (Date & Page)
+      doc.fontSize(9).font('Helvetica-Oblique').fillColor('#666666');
+      let metaText = `${new Date(note.createdAt).toLocaleDateString()}`;
+      if (note.page) {
+        metaText += ` | Page ${note.page}`;
+      }
+      doc.text(metaText);
+      
+      doc.moveDown(1);
+      doc.strokeColor('#e0e0e0').lineWidth(0.5).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+      doc.moveDown(1);
+      
+      doc.fillColor('black');
+    });
+
+    doc.end();
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

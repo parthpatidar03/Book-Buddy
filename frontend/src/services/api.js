@@ -58,6 +58,7 @@ export const readingListAPI = {
   updateProgress: (id, progress) => api.put(`/reading-list/${id}/progress`, { progress }),
   addNote: (id, note) => api.post(`/reading-list/${id}/notes`, note),
   export: (format) => api.get('/reading-list/export', { params: { format }, responseType: 'blob' }),
+  exportNotes: (id) => api.get(`/reading-list/${id}/notes/export`, { responseType: 'blob' }),
 };
 
 // Reviews API
@@ -89,6 +90,11 @@ export const usersAPI = {
   follow: (id) => api.post(`/users/follow/${id}`),
   unfollow: (id) => api.post(`/users/unfollow/${id}`),
   getProfile: (id) => api.get(`/users/profile/${id}`),
+};
+
+// Analytics API
+export const analyticsAPI = {
+  get: () => api.get('/analytics'),
 };
 
 export default api;

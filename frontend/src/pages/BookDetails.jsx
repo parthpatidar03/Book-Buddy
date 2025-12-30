@@ -22,6 +22,7 @@ const BookDetails = () => {
   const [readingStatus, setReadingStatus] = useState(null);
   const [readingListId, setReadingListId] = useState(null);
   const [readingProgress, setReadingProgress] = useState(0);
+  const [finishDate, setFinishDate] = useState('');
   const [notes, setNotes] = useState([]);
   const [error, setError] = useState('');
 
@@ -61,6 +62,12 @@ const BookDetails = () => {
         setReadingStatus(item.status);
         setReadingListId(item._id);
         setReadingProgress(item.progress || 0);
+        if (item.finishDate) {
+          const d = new Date(item.finishDate);
+          setFinishDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+        } else {
+          setFinishDate('');
+        }
         setNotes(item.notes || []);
       }
     } catch (error) {
@@ -68,20 +75,37 @@ const BookDetails = () => {
     }
   };
 
-  const handleAddToReadingList = async (status) => {
+  const handleAddToReadingList = async (status, date) => {
     if (!user) {
       navigate('/login');
       return;
     }
 
     try {
+      const data = { status };
+      // If a date is provided, use it. 
+      // If status is complete and no date provided (and not already set), backend will auto-set to now.
+      // But if we are just switching status in UI, we might want to update local state too.
+      if (date !== undefined) {
+        data.finishDate = date;
+      }
+
       if (readingListId) {
-        await readingListAPI.update(readingListId, { status });
+        await readingListAPI.update(readingListId, data);
       } else {
-        const response = await readingListAPI.add({ book: id, status });
+        const response = await readingListAPI.add({ book: id, ...data });
         setReadingListId(response.data._id);
       }
+      
       setReadingStatus(status);
+      if (date !== undefined) {
+        setFinishDate(date);
+      } else if (status === 'complete' && !finishDate) {
+         // If auto-completed, set local date to today so picker shows something
+         const d = new Date();
+         setFinishDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+      }
+
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to update reading list');
     }
@@ -107,6 +131,23 @@ const BookDetails = () => {
       checkReadingList(); 
     } catch (error) {
       console.error('Error adding note:', error);
+    }
+  };
+
+  const handleDownloadNotes = async () => {
+    if (!readingListId) return;
+    try {
+      const response = await readingListAPI.exportNotes(readingListId);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${book.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_notes.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Error downloading notes:', error);
+      setError('Failed to download notes');
     }
   };
 
@@ -201,6 +242,20 @@ const BookDetails = () => {
                       value={readingStatus || 'wishlist'}
                       onChange={(status) => handleAddToReadingList(status)}
                     />
+                    
+                    {readingStatus === 'complete' && (
+                      <div className="flex items-center gap-2 ml-4 border-l pl-4 border-gray-300 dark:border-gray-600">
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                          Finished:
+                        </label>
+                        <input
+                          type="date"
+                          className="bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-1.5"
+                          value={finishDate}
+                          onChange={(e) => handleAddToReadingList(readingStatus, e.target.value)}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   {readingStatus === 'reading' && (
@@ -215,6 +270,7 @@ const BookDetails = () => {
                     <NotesSection
                       notes={notes}
                       onAddNote={handleAddNote}
+                      onDownloadNotes={handleDownloadNotes}
                     />
                   )}
                 </>

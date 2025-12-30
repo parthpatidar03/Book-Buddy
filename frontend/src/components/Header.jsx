@@ -58,6 +58,7 @@ const Header = () => {
                   <Link to="/reading-list" className={navLinkClass('/reading-list')}>My Books</Link>
                   <Link to="/my-reviews" className={navLinkClass('/my-reviews')}>Reviews</Link>
                   <Link to="/custom-lists" className={navLinkClass('/custom-lists')}>Lists</Link>
+                  <Link to="/analytics" className={navLinkClass('/analytics')}>Analytics</Link>
                 </>
               )}
             </div>

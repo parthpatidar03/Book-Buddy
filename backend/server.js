@@ -10,6 +10,7 @@ import reviewRoutes from './routes/reviewRoutes.js';
 import customListRoutes from './routes/customListRoutes.js';
 import recommendationRoutes from './routes/recommendationRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
 // Import error handler middleware
 import errorHandler from './middleware/errorMiddleware.js';
 
@@ -42,6 +43,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/custom-lists', customListRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Book Buddy backend');

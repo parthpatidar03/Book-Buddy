@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-const NotesSection = ({ notes, onAddNote }) => {
+const NotesSection = ({ notes, onAddNote, onDownloadNotes }) => {
   const [newNote, setNewNote] = useState('');
   const [page, setPage] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +22,33 @@ const NotesSection = ({ notes, onAddNote }) => {
     }
   };
 
+  const handleDownload = async () => {
+    if (!notes || notes.length === 0) return;
+    
+    setIsDownloading(true);
+    try {
+      await onDownloadNotes();
+    } catch (error) {
+      console.error('Error downloading notes:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Notes & Highlights</h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">Notes & Highlights</h3>
+        {notes && notes.length > 0 && (
+          <button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center gap-1"
+          >
+            {isDownloading ? 'Downloading...' : 'Download PDF'}
+          </button>
+        )}
+      </div>
       
       <div className="space-y-4 mb-6 max-h-60 overflow-y-auto">
         {notes && notes.length > 0 ? (

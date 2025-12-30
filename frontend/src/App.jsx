@@ -13,6 +13,7 @@ import MyReviews from './pages/MyReviews';
 import CustomLists from './pages/CustomLists';
 import UserProfile from './pages/UserProfile';
 import PublicProfile from './pages/PublicProfile';
+import Analytics from './pages/Analytics';
 
 function App() {
   return (
@@ -57,6 +58,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <UserProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <Analytics />
                     </ProtectedRoute>
                   }
                 />

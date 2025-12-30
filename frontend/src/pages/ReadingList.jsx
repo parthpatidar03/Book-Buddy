@@ -22,12 +22,16 @@ const ReadingList = () => {
     }
   };
 
-  const handleStatusChange = async (itemId, newStatus) => {
+  const handleStatusChange = async (itemId, newStatus, newFinishDate) => {
     try {
-      await readingListAPI.update(itemId, { status: newStatus });
+      const updateData = {};
+      if (newStatus) updateData.status = newStatus;
+      if (newFinishDate !== undefined) updateData.finishDate = newFinishDate;
+      
+      await readingListAPI.update(itemId, updateData);
       fetchReadingList();
     } catch (error) {
-      console.error('Error updating status:', error);
+      console.error('Error updating item:', error);
     }
   };
 
@@ -183,17 +187,37 @@ const ReadingListItem = ({ item, onStatusChange, onRemove }) => {
           <p className="text-sm text-gray-600 dark:text-gray-400">by {item.book.author}</p>
         </Link>
       </div>
-      <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
-        <StatusSelector
-          value={item.status}
-          onChange={(status) => onStatusChange(item._id, status)}
-        />
-        <button
-          onClick={() => onRemove(item._id)}
-          className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium transition-colors"
-        >
-          Remove
-        </button>
+      <div className="flex flex-col gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between gap-3">
+          <StatusSelector
+            value={item.status}
+            onChange={(status) => onStatusChange(item._id, status)}
+          />
+          <button
+            onClick={() => onRemove(item._id)}
+            className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium transition-colors"
+          >
+            Remove
+          </button>
+        </div>
+        
+        {/* Only show the 'Finished' date input if the book status is 'complete' */}
+        {item.status === 'complete' && (
+          <div className="flex items-center gap-2 text-sm">
+            <label className="text-gray-600 dark:text-gray-400 whitespace-nowrap">Finished:</label>
+            <input
+              type="date"
+              className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
+              // Format date to YYYY-MM-DD for the input value using local time
+              value={item.finishDate ? (() => {
+                const d = new Date(item.finishDate);
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+              })() : ''}
+              // Update the finish date when changed
+              onChange={(e) => onStatusChange(item._id, undefined, e.target.value)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

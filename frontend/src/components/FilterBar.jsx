@@ -16,6 +16,7 @@ const Dropdown = ({
   const toggleRef = useRef(null);
   const listRef = useRef(null);
   const searchRef = useRef(null);
+  
   const idRef = useRef(`dropdown-${Math.random().toString(36).slice(2)}`);
   const [menuStyle, setMenuStyle] = useState({});
 

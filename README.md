@@ -1,197 +1,101 @@
-# Book Buddy - Online Book Discovery & Reading Tracker
+# Book Buddy 📚
 
-A full-stack web application for discovering books, tracking reading progress, writing reviews, and organizing custom reading lists.
+Book Buddy is a comprehensive personal library management application designed to help book lovers track their reading journey. Built with the MERN stack (MongoDB, Express, React, Node.js), it offers a rich set of features for managing books, tracking progress, and analyzing reading habits.
 
-## Features
+## 🌟 Key Features
 
-- ✅ User Authentication (Signup/Login with JWT)
-- ✅ Book Catalog with Search & Filter
-- ✅ Reading List Management (Wishlist, Reading, Complete)
-- ✅ Book Reviews & Ratings (1-5 stars)
-- ✅ Custom Lists (e.g., Classics, Must Read)
-- ✅ Responsive Modern UI
+### 📖 Book Management
+*   **Browse & Discover**: Explore a vast collection of books with detailed information including covers, authors, genres, and descriptions.
+*   **Search & Filter**: Easily find books by title, author, or genre.
+*   **Book Details**: View comprehensive details for each book.
 
-## Tech Stack
+### 📝 Reading List & Tracking
+*   **Status Tracking**: Categorize books into **Reading**, **Wishlist**, or **Completed**.
+*   **Progress Tracking**: Update your reading progress (percentage) for books currently being read.
+*   **Auto-Date Completion**: Automatically records the finish date when a book is marked as "Complete".
+*   **Manual Date Entry**: Edit the finish date directly from the Book Details page using a convenient date picker.
 
-### Backend
-- Node.js + Express
-- MongoDB Atlas (Mongoose)
-- JWT Authentication
-- bcrypt for password hashing
+### ✍️ Notes & Highlights
+*   **Add Notes**: Save favorite quotes, thoughts, and highlights for each book, including page numbers.
+*   **Export Notes**: Download your notes for a specific book as a beautifully formatted PDF.
 
-### Frontend
-- React 18
-- Vite
-- React Router
-- Axios
-- Context API
+### 📊 Analytics Dashboard
+*   **Visual Insights**: View interactive charts visualizing your reading habits.
+*   **Books per Month**: Bar chart showing the number of books read each month.
+*   **Genre Distribution**: Pie chart displaying your most read genres.
+*   **Key Metrics**: Summary cards for Total Books Read, Average Rating, and Total Reviews.
 
-## Project Structure
+### 📤 Export & Data Portability
+*   **Export Reading History**: Download your entire reading history as a **CSV** or **PDF** file.
+*   **PDF Formatting**: The exported PDF is compact, numbered, and professionally formatted for easy printing or sharing.
 
-```
-Book Buddy/
-├── backend/
-│   ├── config/          # Database configuration
-│   ├── controllers/     # Route controllers
-│   ├── middleware/      # Auth & error middleware
-│   ├── models/          # Mongoose models
-│   ├── routes/          # API routes
-│   └── server.js        # Express server
-└── frontend/
-    ├── src/
-    │   ├── components/  # Reusable components
-    │   ├── context/     # React contexts
-    │   ├── pages/       # Page components
-    │   ├── services/    # API services
-    │   └── App.jsx      # Main app component
-    └── vite.config.js   # Vite configuration
-```
+### ⭐ Reviews & Community
+*   **Rate & Review**: Give star ratings and write reviews for books you've read.
+*   **Community Reviews**: See what others are saying about books.
 
-## Getting Started
+### 📋 Custom Lists
+*   **Create Lists**: Organize books into custom lists (e.g., "Summer Reading", "Favorites").
+*   **Manage Lists**: Add or remove books from your custom lists.
+
+## 🛠️ Technology Stack
+
+*   **Frontend**: React.js, Tailwind CSS, Recharts (for analytics), Lucide React (icons).
+*   **Backend**: Node.js, Express.js.
+*   **Database**: MongoDB (with Mongoose).
+*   **Authentication**: JWT (JSON Web Tokens).
+*   **PDF Generation**: PDFKit.
+*   **CSV Generation**: json2csv.
+
+## 🚀 Getting Started
 
 ### Prerequisites
+*   Node.js installed
+*   MongoDB installed or a MongoDB Atlas connection string
 
-- Node.js (v16 or higher)
-- MongoDB Atlas account (free tier works)
-- npm or yarn
+### Installation
 
-### Backend Setup
+1.  **Clone the repository**
+    ```bash
+    git clone <repository-url>
+    cd book-buddy
+    ```
 
-1. Navigate to backend directory:
-   ```bash
-   cd "Book Buddy/backend"
-   ```
+2.  **Install Backend Dependencies**
+    ```bash
+    cd backend
+    npm install
+    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+3.  **Install Frontend Dependencies**
+    ```bash
+    cd ../frontend
+    npm install
+    ```
 
-3. Create `.env` file in `backend/` directory:
-   ```env
-   MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/bookbuddy?retryWrites=true&w=majority
-   JWT_SECRET=your_super_secret_jwt_key_at_least_32_characters_long
-   PORT=3000
-   CLIENT_ORIGIN=http://localhost:5173
-   ```
+4.  **Environment Setup**
+    *   Create a `.env` file in the `backend` directory.
+    *   Add the following variables:
+        ```env
+        PORT=5000
+        MONGODB_URI=your_mongodb_connection_string
+        JWT_SECRET=your_jwt_secret_key
+        ```
 
-4. Start the backend server:
-   ```bash
-   npm run dev
-   ```
+5.  **Run the Application**
+    *   Start the backend server:
+        ```bash
+        cd backend
+        npm run dev
+        ```
+    *   Start the frontend development server:
+        ```bash
+        cd frontend
+        npm run dev
+        ```
 
-   Server will run on `http://localhost:3000`
+6.  **Access the App**
+    *   Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal).
 
-### Frontend Setup
+## 📄 License
 
-1. Navigate to frontend directory:
-   ```bash
-   cd "Book Buddy/frontend"
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create `.env` file in `frontend/` directory (optional):
-   ```env
-   VITE_API_URL=http://localhost:3000/api
-   ```
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-   Frontend will run on `http://localhost:5173`
-
-## Usage
-
-1. **Sign Up**: Create a new account
-2. **Browse Books**: Search and filter books by title, author, genre, or year
-3. **Add to Reading List**: Add books with status (Wishlist, Reading, Complete)
-4. **Write Reviews**: Rate books (1-5 stars) and write reviews
-5. **Create Custom Lists**: Organize books into custom lists (e.g., "Classics", "Must Read")
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login
-
-### Books
-- `GET /api/books` - Get all books (with search/filter params)
-- `GET /api/books/:id` - Get single book
-- `POST /api/books` - Create book (protected)
-
-### Reading List
-- `GET /api/reading-list` - Get user's reading list (protected)
-- `POST /api/reading-list` - Add book to list (protected)
-- `PUT /api/reading-list/:id` - Update reading status (protected)
-- `DELETE /api/reading-list/:id` - Remove from list (protected)
-
-### Reviews
-- `POST /api/reviews` - Create/update review (protected)
-- `GET /api/reviews/book/:bookId` - Get reviews for a book
-- `GET /api/reviews/user` - Get user's reviews (protected)
-- `PUT /api/reviews/:id` - Update review (protected)
-- `DELETE /api/reviews/:id` - Delete review (protected)
-
-### Custom Lists
-- `GET /api/custom-lists` - Get user's custom lists (protected)
-- `POST /api/custom-lists` - Create custom list (protected)
-- `PUT /api/custom-lists/:id` - Update custom list (protected)
-- `DELETE /api/custom-lists/:id` - Delete custom list (protected)
-
-## Environment Variables
-
-### Backend (.env)
-- `MONGO_URI` - MongoDB Atlas connection string
-- `JWT_SECRET` - Secret key for JWT tokens
-- `PORT` - Server port (default: 3000)
-- `CLIENT_ORIGIN` - Frontend URL for CORS
-
-### Frontend (.env)
-- `VITE_API_URL` - Backend API URL (default: http://localhost:3000/api)
-
-## Building for Production
-
-### Backend
-```bash
-cd backend
-npm start
-```
-
-### Frontend
-```bash
-cd frontend
-npm run build
-npm run preview
-```
-
-## Troubleshooting
-
-### Backend won't start
-- Check MongoDB connection string in `.env`
-- Verify JWT_SECRET is set
-- Make sure MongoDB Atlas IP is whitelisted
-
-### Frontend can't connect to backend
-- Verify backend is running on port 3000
-- Check CORS settings in backend
-- Verify VITE_API_URL in frontend `.env`
-
-### Authentication issues
-- Clear localStorage in browser
-- Check JWT token expiration (7 days)
-- Verify user exists in database
-
-## License
-
-ISC
-
-## Author
-
-Book Buddy Development Team
-
+This project is licensed under the MIT License.

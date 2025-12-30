@@ -108,7 +108,7 @@ const Dropdown = ({
 
   const menu = (
     <div 
-      className="absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden flex flex-col max-h-64" 
+      className="absolute z-50 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-xl shadow-xl overflow-hidden flex flex-col max-h-64" 
       style={menuStyle}
     >
       <div className="p-2 border-b border-gray-100 dark:border-gray-700">

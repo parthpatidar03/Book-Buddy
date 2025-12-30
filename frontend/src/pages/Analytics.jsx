@@ -53,15 +53,15 @@ const Analytics = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="card">
           <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Total Books Read</h3>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{data.totalRead}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="card">
           <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Average Rating</h3>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{data.averageRating.toFixed(1)} / 5</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="card">
           <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Total Reviews</h3>
           <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{data.totalReviews}</p>
         </div>
@@ -69,24 +69,27 @@ const Analytics = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Books per Month Chart */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="card">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Books Read per Month</h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.booksPerMonth}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
+                <XAxis dataKey="name" stroke="#9CA3AF" />
+                <YAxis allowDecimals={false} stroke="#9CA3AF" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#F9FAFB' }}
+                  itemStyle={{ color: '#F9FAFB' }}
+                />
                 <Legend />
-                <Bar dataKey="count" name="Books Read" fill="#4F46E5" />
+                <Bar dataKey="count" name="Books Read" fill="#818cf8" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Genre Distribution Chart */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="card">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Genre Distribution</h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
@@ -95,17 +98,21 @@ const Analytics = () => {
                   data={data.genreDistribution}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}
+                  labelLine={true}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  outerRadius={100} 
                   fill="#8884d8"
                   dataKey="value"
+                  paddingAngle={2}
                 >
                   {data.genreDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(255,255,255,0.1)" />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#F9FAFB' }}
+                  itemStyle={{ color: '#F9FAFB' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>

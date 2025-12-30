@@ -15,12 +15,15 @@ import UserProfile from './pages/UserProfile';
 import PublicProfile from './pages/PublicProfile';
 import Analytics from './pages/Analytics';
 
+import ShootingStars from './components/ShootingStars';
+
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+          <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
+            <ShootingStars />
             <Header />
             <main>
               <Routes>

@@ -4,33 +4,120 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+    @apply text-gray-900 dark:text-gray-100 transition-colors duration-300;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
+  /* Animated Backgrounds */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-size: 300% 300%;
+    animation: gradientAnimation 20s ease infinite;
+  }
+
+  /* Light Mode Background: Soft, dreamy pastels */
+  body:not(.dark)::before {
+    background-image: linear-gradient(-45deg,
+        #ee7752,
+        #e73c7e,
+        #23a6d5,
+        #23d5ab);
+    opacity: 0.15;
+  }
+
+  /* Dark Mode Background: Deep Space */
+  .dark body::before {
+    background-image: linear-gradient(to bottom,
+        #020617,
+        #0f172a,
+        #020617);
+    opacity: 1;
+  }
+
+  /* Starry Night Effect (Static Stars) */
+  .dark body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image:
+      radial-gradient(1px 1px at 10% 10%, white, transparent),
+      radial-gradient(1px 1px at 20% 20%, white, transparent),
+      radial-gradient(2px 2px at 30% 30%, white, transparent),
+      radial-gradient(1px 1px at 40% 40%, white, transparent),
+      radial-gradient(1px 1px at 50% 50%, white, transparent),
+      radial-gradient(2px 2px at 60% 60%, white, transparent),
+      radial-gradient(1px 1px at 70% 70%, white, transparent),
+      radial-gradient(1px 1px at 80% 80%, white, transparent),
+      radial-gradient(2px 2px at 90% 90%, white, transparent),
+      radial-gradient(1px 1px at 15% 85%, white, transparent),
+      radial-gradient(1px 1px at 85% 15%, white, transparent);
+    background-size: 550px 550px;
+    opacity: 0.3;
+    animation: twinkle 5s ease-in-out infinite alternate;
+  }
+
+  /* Shooting Stars Container */
   .dark body {
-    @apply bg-gray-900 text-gray-100;
+    background-color: #020617;
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes twinkle {
+    0% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+
+    100% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95;
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md;
+    @apply bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02] border border-transparent;
   }
 
   .btn-outline {
-    @apply border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800;
+    @apply border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:border-gray-400 dark:hover:border-gray-500;
   }
 
+  /* Glassmorphism Card */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300;
+    @apply bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-white/10 p-6 transition-all duration-300 hover:shadow-2xl hover:border-primary-500/30 dark:hover:border-primary-500/30;
   }
 
   .input {
-    @apply w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+    @apply w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all duration-200 shadow-sm;
   }
 }
 
@@ -44,9 +131,49 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  @apply bg-gray-300/50 dark:bg-gray-600/50 rounded-full backdrop-blur-sm;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  @apply bg-gray-400/80 dark:bg-gray-500/80;
+}
+
+/* Shooting Stars */
+.shooting-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+    0 0 0 8px rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(255, 255, 255, 1);
+  animation: animateShootingStar linear infinite;
+  opacity: 0;
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, #fff, transparent);
+}
+
+@keyframes animateShootingStar {
+  0% {
+    transform: rotate(315deg) translateX(0);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(315deg) translateX(-1500px);
+    opacity: 0;
+  }
 }

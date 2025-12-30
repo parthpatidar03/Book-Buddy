@@ -6,7 +6,8 @@ import {
   updateReadingStatus,
   removeFromReadingList,
   updateProgress,
-  addNote
+  addNote,
+  exportReadingList
 } from '../controllers/readingListController.js';
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.put('/:id', auth, updateReadingStatus);
 router.delete('/:id', auth, removeFromReadingList);
 router.put('/:id/progress', auth, updateProgress);
 router.post('/:id/notes', auth, addNote);
+router.get('/export', auth, exportReadingList);
 
 export default router;
 

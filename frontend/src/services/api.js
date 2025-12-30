@@ -57,6 +57,7 @@ export const readingListAPI = {
   delete: (id) => api.delete(`/reading-list/${id}`),
   updateProgress: (id, progress) => api.put(`/reading-list/${id}/progress`, { progress }),
   addNote: (id, note) => api.post(`/reading-list/${id}/notes`, note),
+  export: (format) => api.get('/reading-list/export', { params: { format }, responseType: 'blob' }),
 };
 
 // Reviews API

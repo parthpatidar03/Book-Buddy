@@ -52,3 +52,56 @@ export const removeFromReadingList = async (req, res) => {
   }
 };
 
+// PUT /api/reading-list/:id/progress (protected)
+export const updateProgress = async (req, res) => {
+  try {
+    const { progress } = req.body;
+    let update = { progress };
+    
+    // Auto-complete if progress is 100
+    if (progress === 100) {
+      update.status = 'complete';
+      update.finishDate = Date.now();
+    }
+
+    // Set start date if progress > 0 and not set
+    const currentItem = await ReadingList.findOne({ _id: req.params.id, user: req.user._id });
+    if (currentItem && progress > 0 && !currentItem.startDate) {
+      update.startDate = Date.now();
+      if (currentItem.status === 'wishlist') {
+        update.status = 'reading';
+      }
+    }
+
+    const item = await ReadingList.findOneAndUpdate(
+      { _id: req.params.id, user: req.user._id },
+      update,
+      { new: true }
+    ).populate('book');
+
+    if (!item) return res.status(404).json({ message: 'Reading list item not found' });
+    res.json(item);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// POST /api/reading-list/:id/notes (protected)
+export const addNote = async (req, res) => {
+  try {
+    const { text, page } = req.body;
+    const item = await ReadingList.findOneAndUpdate(
+      { _id: req.params.id, user: req.user._id },
+      { $push: { notes: { text, page } } },
+      { new: true }
+    ).populate('book');
+
+    if (!item) return res.status(404).json({ message: 'Reading list item not found' });
+    res.json(item);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

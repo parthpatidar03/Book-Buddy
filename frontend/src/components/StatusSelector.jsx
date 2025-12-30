@@ -1,5 +1,3 @@
-import './StatusSelector.css';
-
 const StatusSelector = ({ value, onChange }) => {
   const statuses = [
     { value: 'wishlist', label: 'Wishlist' },
@@ -8,7 +6,11 @@ const StatusSelector = ({ value, onChange }) => {
   ];
 
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="status-selector">
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="input w-full md:w-auto"
+    >
       {statuses.map((status) => (
         <option key={status.value} value={status.value}>
           {status.label}

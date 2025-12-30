@@ -38,7 +38,7 @@
   padding: 8px 15px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
-  background: var(--surface, #fff);
+  background: #e2e6ee;
   cursor: pointer;
   font-size: 14px;
   display: flex;
@@ -55,7 +55,7 @@
 }
 .genre-menu {
   position: absolute;
-  background: var(--surface, #fff);
+  background: var(--surface);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -70,6 +70,8 @@
   padding: 6px 8px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
+  background: transparent;
+  color: inherit;
 }
 .genre-list {
   max-height: 220px;
@@ -83,12 +85,12 @@
   cursor: pointer;
 }
 .genre-item:hover {
-  background: rgba(0,0,0,0.03);
+  background: var(--item-hover);
 }
 .genre-item.selected {
-  background: rgba(0,0,0,0.06);
+  background: var(--item-selected);
   font-weight: 600;
 }
 .genre-item.highlighted {
-  background: rgba(0,0,0,0.08);
+  background: var(--item-highlight);
 }

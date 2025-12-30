@@ -68,3 +68,25 @@ export const deleteReview = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+// POST /api/reviews/:id/like (toggle like)
+export const likeReview = async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found' });
+
+    // Check if user already liked
+    const index = review.likes.indexOf(req.user._id);
+    if (index === -1) {
+      // Like
+      review.likes.push(req.user._id);
+    } else {
+      // Unlike
+      review.likes.splice(index, 1);
+    }
+
+    await review.save();
+    res.json(review.likes);
+  } catch {
+    res.status(500).json({ message: 'Server error' });
+  }
+};

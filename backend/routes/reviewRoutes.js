@@ -5,7 +5,8 @@ import {
   getReviewsForBook,
   getUserReviews,
   updateReview,
-  deleteReview
+  deleteReview,
+  likeReview
 } from '../controllers/reviewController.js';
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.get('/book/:bookId', getReviewsForBook);
 router.get('/user', auth, getUserReviews);
 router.put('/:id', auth, updateReview);
 router.delete('/:id', auth, deleteReview);
+router.post('/:id/like', auth, likeReview);
 
 export default router;

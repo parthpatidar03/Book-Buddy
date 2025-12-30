@@ -55,6 +55,8 @@ export const readingListAPI = {
   add: (data) => api.post('/reading-list', data),
   update: (id, data) => api.put(`/reading-list/${id}`, data),
   delete: (id) => api.delete(`/reading-list/${id}`),
+  updateProgress: (id, progress) => api.put(`/reading-list/${id}/progress`, { progress }),
+  addNote: (id, note) => api.post(`/reading-list/${id}/notes`, note),
 };
 
 // Reviews API
@@ -64,6 +66,7 @@ export const reviewsAPI = {
   getUserReviews: () => api.get('/reviews/user'),
   update: (id, data) => api.put(`/reviews/${id}`, data),
   delete: (id) => api.delete(`/reviews/${id}`),
+  like: (id) => api.post(`/reviews/${id}/like`),
 };
 
 // Custom Lists API
@@ -72,6 +75,19 @@ export const customListsAPI = {
   create: (data) => api.post('/custom-lists', data),
   update: (id, data) => api.put(`/custom-lists/${id}`, data),
   delete: (id) => api.delete(`/custom-lists/${id}`),
+};
+
+// Recommendations API
+export const recommendationsAPI = {
+  get: () => api.get('/recommendations'),
+};
+
+// Users API
+export const usersAPI = {
+  updateGoal: (data) => api.put('/users/goal', data),
+  follow: (id) => api.post(`/users/follow/${id}`),
+  unfollow: (id) => api.post(`/users/unfollow/${id}`),
+  getProfile: (id) => api.get(`/users/profile/${id}`),
 };
 
 export default api;

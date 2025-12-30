@@ -1,4 +1,3 @@
-import './FilterBar.css';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -32,23 +31,21 @@ const Dropdown = ({
 
   useEffect(() => {
     if (!open) return;
-    const rect = toggleRef.current.getBoundingClientRect();
-    const style = {
-      left: `${rect.left}px`,
-      top: `${rect.bottom + 6 + window.scrollY}px`,
-      minWidth: `${Math.max(minWidth, rect.width)}px`,
+    const updatePosition = () => {
+      if (!toggleRef.current) return;
+      const rect = toggleRef.current.getBoundingClientRect();
+      setMenuStyle({
+        left: `${rect.left}px`,
+        top: `${rect.bottom + 6 + window.scrollY}px`,
+        minWidth: `${Math.max(minWidth, rect.width)}px`,
+      });
     };
-    setMenuStyle(style);
-
-    const onResize = () => {
-      const r = toggleRef.current.getBoundingClientRect();
-      setMenuStyle({ left: `${r.left}px`, top: `${r.bottom + 6 + window.scrollY}px`, minWidth: `${Math.max(minWidth, r.width)}px` });
-    };
-    window.addEventListener('resize', onResize);
-    window.addEventListener('scroll', onResize, true);
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
     return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('scroll', onResize, true);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
     };
   }, [open, minWidth]);
 
@@ -58,26 +55,19 @@ const Dropdown = ({
     if (!open) return;
     const idx = filtered.findIndex((it) => String(it.value) === String(value));
     setHighlighted(idx >= 0 ? idx : (filtered.length ? 0 : -1));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, filter, items]);
+  }, [open, filter, items, value]);
 
   useEffect(() => {
     if (highlighted >= 0 && listRef.current) {
-      const el = listRef.current.querySelector(`#${idRef.current}-option-${highlighted}`);
+      const el = listRef.current.children[includeAllLabel ? highlighted + 1 : highlighted];
       if (el) el.scrollIntoView({ block: 'nearest' });
     }
-  }, [highlighted]);
+  }, [highlighted, includeAllLabel]);
 
   useEffect(() => {
     if (!open) return;
-    // focus the search input without causing scroll jump
     setTimeout(() => {
-      try {
-        searchRef.current?.focus({ preventScroll: true });
-      } catch (e) {
-        // fallback for browsers that don't support preventScroll
-        searchRef.current?.focus();
-      }
+      searchRef.current?.focus({ preventScroll: true });
     }, 0);
   }, [open]);
 
@@ -112,35 +102,32 @@ const Dropdown = ({
       e.preventDefault();
       setOpen(false);
       toggleRef.current?.focus();
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      setHighlighted(0);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      setHighlighted(filtered.length - 1);
     }
   };
 
   const menu = (
-    <div className="genre-menu" style={menuStyle} role="listbox" id={`${idRef.current}-menu`} aria-labelledby={`${idRef.current}-toggle`}>
-      <div className="genre-search">
+    <div 
+      className="absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg overflow-hidden flex flex-col max-h-64" 
+      style={menuStyle}
+    >
+      <div className="p-2 border-b border-gray-100 dark:border-gray-700">
         <input
-          id={`${idRef.current}-search`}
           ref={searchRef}
           placeholder={searchPlaceholder}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           onKeyDown={onSearchKeyDown}
-          aria-label={searchPlaceholder}
+          className="w-full px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
       </div>
-      <ul className="genre-list" ref={listRef}>
+      <ul className="overflow-y-auto py-1" ref={listRef}>
         {includeAllLabel && (
           <li
-            id={`${idRef.current}-option-0`}
-            role="option"
-            aria-selected={value === ''}
-            className={`genre-item ${value === '' ? 'selected' : ''}`}
+            className={`px-4 py-2 text-sm cursor-pointer transition-colors ${
+              value === '' 
+                ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' 
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+            }`}
             onClick={() => {
               onChange('');
               setOpen(false);
@@ -150,46 +137,49 @@ const Dropdown = ({
             {includeAllLabel}
           </li>
         )}
-        {filtered.map((it, idx) => {
-          const index = includeAllLabel ? idx + 1 : idx;
-          return (
-            <li
-              id={`${idRef.current}-option-${index}`}
-              role="option"
-              aria-selected={String(value) === String(it.value)}
-              key={it.value}
-              className={`genre-item ${String(value) === String(it.value) ? 'selected' : ''} ${highlighted === idx ? 'highlighted' : ''}`}
-              onClick={() => {
-                onChange(it.value);
-                setOpen(false);
-                toggleRef.current?.focus();
-              }}
-              onMouseEnter={() => setHighlighted(idx)}
-            >
-              {it.label}
-            </li>
-          );
-        })}
+        {filtered.map((it, idx) => (
+          <li
+            key={it.value}
+            className={`px-4 py-2 text-sm cursor-pointer transition-colors ${
+              String(value) === String(it.value)
+                ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                : 'text-gray-700 dark:text-gray-300'
+            } ${
+              highlighted === idx ? 'bg-gray-100 dark:bg-gray-700' : ''
+            }`}
+            onClick={() => {
+              onChange(it.value);
+              setOpen(false);
+              toggleRef.current?.focus();
+            }}
+            onMouseEnter={() => setHighlighted(idx)}
+          >
+            {it.label}
+          </li>
+        ))}
+        {filtered.length === 0 && (
+          <li className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+            No results found
+          </li>
+        )}
       </ul>
     </div>
   );
 
   return (
-    <div className="genre-dropdown" ref={toggleRef}>
+    <div className="relative inline-block" ref={toggleRef}>
       <button
-        id={`${idRef.current}-toggle`}
         type="button"
-        className="genre-toggle"
+        className="input flex items-center justify-between gap-2 min-w-[140px] cursor-pointer hover:border-gray-400 dark:hover:border-gray-500"
         onClick={() => setOpen((s) => !s)}
         onKeyDown={onToggleKeyDown}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={`${idRef.current}-menu`}
-        role="combobox"
-        tabIndex={0}
       >
-        {value === '' || value == null ? placeholder : items.find((i) => String(i.value) === String(value))?.label || placeholder}
-        <span className="caret">▾</span>
+        <span className="truncate">
+          {value === '' || value == null 
+            ? placeholder 
+            : items.find((i) => String(i.value) === String(value))?.label || placeholder}
+        </span>
+        <span className="text-gray-400 text-xs">▼</span>
       </button>
       {open && createPortal(menu, document.body)}
     </div>
@@ -204,9 +194,9 @@ const FilterBar = ({ genres, selectedGenre, selectedYear, onGenreChange, onYearC
   const yearItems = years.map((y) => ({ value: y, label: String(y) }));
 
   return (
-    <div className="filter-bar">
-      <div className="filter-group">
-        <label>Genre:</label>
+    <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex items-center gap-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Genre:</label>
         <Dropdown
           items={genreItems}
           value={selectedGenre || ''}
@@ -214,11 +204,11 @@ const FilterBar = ({ genres, selectedGenre, selectedYear, onGenreChange, onYearC
           placeholder="All Genres"
           includeAllLabel="All Genres"
           searchPlaceholder="Search genres..."
-          minWidth={220}
+          minWidth={200}
         />
       </div>
-      <div className="filter-group">
-        <label>Year:</label>
+      <div className="flex items-center gap-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Year:</label>
         <Dropdown
           items={yearItems}
           value={selectedYear || ''}

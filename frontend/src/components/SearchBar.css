@@ -10,6 +10,13 @@
   border-radius: 25px;
   font-size: 16px;
   transition: border-color 0.3s;
+  background: var(--bg-surface);
+  color: var(--text-color);
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+  outline: 3px solid #ff00ff !important;
+  outline-offset: 0px;
 }
 
 .search-input:focus {

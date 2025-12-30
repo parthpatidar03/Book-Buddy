@@ -8,6 +8,9 @@ const bookSchema = new mongoose.Schema({
   publicationYear: { type: Number },
   createdAt: { type: Date, default: Date.now }
 });
+// a compound text index for fast, relevant full-text searches.
+// We give higher weight to `title`, then `author`, then `description`.
+bookSchema.index({ title: 'text', author: 'text', description: 'text' }, { weights: { title: 5, author: 3, description: 1 } });
 
 export default mongoose.model('Book', bookSchema);
 

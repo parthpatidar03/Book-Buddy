@@ -1,48 +1,48 @@
 .header {
-  background-color: var(--bg-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-surface);
+  box-shadow: 0 2px 8px rgba(2,6,23,0.06);
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: background-color 220ms ease, box-shadow 220ms ease;
 }
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 16px 0;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--primary-color);
   text-decoration: none;
+  letter-spacing: -0.2px;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .nav-button {
   padding: 6px 10px;
   border: 1px solid var(--border-color);
-  background: var(--surface, #fff);
-  border-radius: 6px;
+  background: transparent;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
 }
-.nav-button:hover {
-  background: rgba(0,0,0,0.03);
-}
+.nav-button:hover { background: rgba(0,0,0,0.04); }
 
 .nav a {
   text-decoration: none;
   color: var(--text-color);
-  font-weight: 500;
-  transition: color 0.3s;
+  font-weight: 600;
+  transition: color 200ms ease, transform 200ms ease;
 }
 
 .nav-icon {
@@ -60,6 +60,8 @@
   align-items: center;
   gap: 8px;
   color: var(--text-color);
+  padding: 6px 10px;
+  border-radius: 8px;
 }
 .nav-link .nav-icon svg {
   fill: currentColor;
@@ -71,14 +73,9 @@
   object-fit: contain;
 }
 
-.nav a:hover {
-  color: var(--primary-color);
-}
+.nav a:hover { color: var(--primary-color); transform: translateY(-2px); }
 
-.user-name {
-  color: var(--text-light);
-  font-size: 14px;
-}
+.user-name { color: var(--text-muted); font-size: 14px; }
 
 @media (max-width: 768px) {
   .header-content {

@@ -1,0 +1,19 @@
+.theme-toggle {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+.theme-toggle:hover { transform: translateY(-2px); }
+.theme-toggle .sun, .theme-toggle .moon { font-size: 14px; display: inline-block; }
+.theme-toggle.light { color: var(--text-color); }
+.theme-toggle.dark { color: var(--text-color); }
+
+/* subtle focus ring */
+.theme-toggle:focus { outline: none; box-shadow: 0 6px 18px rgba(37,99,235,0.12); }

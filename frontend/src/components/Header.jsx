@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 import './Header.css';
 
 const Header = () => {
@@ -35,6 +36,7 @@ const Header = () => {
             </button>
           </div>
           <nav className="nav">
+            <ThemeToggle />
             {user ? (
               <>
                 <Link to="/" className="nav-link">

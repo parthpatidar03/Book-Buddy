@@ -38,7 +38,6 @@ app.use('/api/books', bookRoutes);
 app.use('/api/reading-list', readingListRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/custom-lists', customListRoutes);
-
 app.get('/', (req, res) => {
   res.send('Book Buddy backend');
 });

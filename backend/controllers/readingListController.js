@@ -36,8 +36,15 @@ export const addToReadingList = async (req, res) => {
 // PUT /api/reading-list/:id (protected)
 export const updateReadingStatus = async (req, res) => {
   try {
-    const { status, finishDate } = req.body;
+    const { status, finishDate, dropReason } = req.body;
     const updateData = { status };
+    
+    // Handle dropReason - set it when status is 'dropped', clear it otherwise
+    if (status === 'dropped' && dropReason !== undefined) {
+      updateData.dropReason = dropReason;
+    } else if (status !== 'dropped') {
+      updateData.dropReason = null; // Clear dropReason when changing away from dropped status
+    }
     
     // If finishDate is provided (even if null), update it.
     // This allows users to manually set the date they finished a book.
@@ -148,6 +155,7 @@ export const exportReadingList = async (req, res) => {
       Progress: `${item.progress}%`,
       'Start Date': item.startDate ? new Date(item.startDate).toLocaleDateString() : 'Not started',
       'Finish Date': item.finishDate ? new Date(item.finishDate).toLocaleDateString() : 'Not finished',
+      'Drop Reason': item.dropReason || '',
       'Added At': new Date(item.addedAt).toLocaleDateString()
     }));
 

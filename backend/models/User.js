@@ -14,4 +14,5 @@ const userSchema = new mongoose.Schema({
 });
 
 export default mongoose.model('User', userSchema);
-
+// Notes:
+// Self-referencing arrays for followers and following  

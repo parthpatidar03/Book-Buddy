@@ -192,7 +192,7 @@ const BookDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-[#27272A] rounded-xl shadow-sm overflow-hidden border border-zinc-200 dark:border-zinc-800">
         <div className="p-8">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Cover Image */}
@@ -288,7 +288,7 @@ const BookDetails = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Review Form */}
             {user && (
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-fit">
+              <div className="bg-white dark:bg-[#27272A] p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 h-fit">
                 <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Write a Review</h3>
                 <form onSubmit={handleSubmitReview} className="space-y-4">
                   <div>

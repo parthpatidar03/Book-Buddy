@@ -6,6 +6,9 @@ const bookSchema = new mongoose.Schema({
   genre: { type: String, required: true, index: true },
   description: { type: String, required: true },
   publicationYear: { type: Number },
+  coverImage: { type: String },
+  averageRating: { type: Number, default: 0 },
+  totalRatings: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now }
 });
 // a compound text index for fast, relevant full-text searches.

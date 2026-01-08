@@ -87,6 +87,15 @@ export const recommendationsAPI = {
 // Users API
 export const usersAPI = {
   updateGoal: (data) => api.put('/users/goal', data),
+  updateProfile: (data) => {
+    // If data is FormData, let browser/axios set the Content-Type automatically (it includes boundary)
+    // Otherwise it defaults to application/json
+    return api.put('/users/profile', data, {
+      headers: {
+        'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json'
+      }
+    });
+  },
   follow: (id) => api.post(`/users/follow/${id}`),
   unfollow: (id) => api.post(`/users/unfollow/${id}`),
   getProfile: (id) => api.get(`/users/profile/${id}`),

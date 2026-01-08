@@ -36,7 +36,7 @@ const NotesSection = ({ notes, onAddNote, onDownloadNotes }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-6">
+    <div className="bg-white dark:bg-[#27272A] p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 mt-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">Notes & Highlights</h3>
         {notes && notes.length > 0 && (

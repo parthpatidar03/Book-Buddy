@@ -1,3 +1,20 @@
 node_modules/
 .env
 .DS_Store
+uploads/
+logs/
+*.log
+npm-debug.log*
+coverage/
+.vscode/
+
+# Temporary Scripts
+cleanup_temp.js
+check_db_config.js
+verify_env.js
+test_behavior.js
+test_search.js
+switch_to_local.js
+seed_books.js
+debug_db.js
+*.json

@@ -1,101 +1,232 @@
 # Book Buddy 📚
 
-Book Buddy is a comprehensive personal library management application designed to help book lovers track their reading journey. Built with the MERN stack (MongoDB, Express, React, Node.js), it offers a rich set of features for managing books, tracking progress, and analyzing reading habits.
+Book Buddy is a comprehensive personal library management application designed to help book lovers track their reading journey. Built with the MERN stack (MongoDB, Express, React, Node.js), it offers a rich set of features for managing books, tracking progress, analyzing reading habits, and connecting with a community of readers.
 
 ## 🌟 Key Features
 
 ### 📖 Book Management
 *   **Browse & Discover**: Explore a vast collection of books with detailed information including covers, authors, genres, and descriptions.
-*   **Search & Filter**: Easily find books by title, author, or genre.
-*   **Book Details**: View comprehensive details for each book.
+*   **Search & Filter**: Powerful full-text search and filtering by genre, year, and rating.
+*   **Book Details**: View comprehensive details including community reviews and average ratings.
 
 ### 📝 Reading List & Tracking
-*   **Status Tracking**: Categorize books into **Reading**, **Wishlist**, or **Completed**.
-*   **Progress Tracking**: Update your reading progress (percentage) for books currently being read.
-*   **Auto-Date Completion**: Automatically records the finish date when a book is marked as "Complete".
-*   **Manual Date Entry**: Edit the finish date directly from the Book Details page using a convenient date picker.
+*   **Status Tracking**: Categorize books into **Reading**, **Wishlist**, **Completed**, or **Dropped**.
+*   **Progress Tracking**: Visual progress bars and percentage tracking for current reads.
+*   **Detailed History**: Auto-capture finish dates and optionally log reasons for dropping books.
+*   **Notes & Highlights**: Add page-specific notes and highlights to your current reads.
 
-### ✍️ Notes & Highlights
-*   **Add Notes**: Save favorite quotes, thoughts, and highlights for each book, including page numbers.
-*   **Export Notes**: Download your notes for a specific book as a beautifully formatted PDF.
+### ✍️ Social & Community
+*   **Profiles**: Customized user profiles with avatars, bios, and reading stats.
+*   **Follow System**: Follow other users to see their reviews and reading activities.
+*   **Reviews**: detailed rating system with text reviews.
 
-### 📊 Analytics Dashboard
-*   **Visual Insights**: View interactive charts visualizing your reading habits.
-*   **Books per Month**: Bar chart showing the number of books read each month.
-*   **Genre Distribution**: Pie chart displaying your most read genres.
-*   **Key Metrics**: Summary cards for Total Books Read, Average Rating, and Total Reviews.
+### 📊 Analytics & Reporting
+*   **Visual Insights**: Interactive charts for reading velocity, genre distribution, and pages read.
+*   **Export Data**: Download your reading journey as professionally formatted **PDFs** or raw **CSV** data.
 
-### 📤 Export & Data Portability
-*   **Export Reading History**: Download your entire reading history as a **CSV** or **PDF** file.
-*   **PDF Formatting**: The exported PDF is compact, numbered, and professionally formatted for easy printing or sharing.
-
-### ⭐ Reviews & Community
-*   **Rate & Review**: Give star ratings and write reviews for books you've read.
-*   **Community Reviews**: See what others are saying about books.
-
-### 📋 Custom Lists
-*   **Create Lists**: Organize books into custom lists (e.g., "Summer Reading", "Favorites").
-*   **Manage Lists**: Add or remove books from your custom lists.
+---
 
 ## 🛠️ Technology Stack
 
-*   **Frontend**: React.js, Tailwind CSS, Recharts (for analytics), Lucide React (icons).
-*   **Backend**: Node.js, Express.js.
-*   **Database**: MongoDB (with Mongoose).
-*   **Authentication**: JWT (JSON Web Tokens).
-*   **PDF Generation**: PDFKit.
-*   **CSV Generation**: json2csv.
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Frontend** | React.js | Component-based UI library |
+| | Tailwind CSS | Utility-first CSS framework for styling |
+| | Recharts | Composable charting library for analytics |
+| | Framer Motion | Library for smooth animations |
+| **Backend** | Node.js | JavaScript runtime environment |
+| | Express.js | Web framework for API routes and middleware |
+| **Database** | MongoDB | NoSQL database for flexible data storage |
+| | Mongoose | ODM for data modeling and validation |
+| **Auth** | JWT | JSON Web Tokens for stateless authentication |
+| **Utilities** | PDFKit | Server-side PDF generation |
+| | Multer | Middleware for handling file uploads (avatars) |
 
-## 🚀 Getting Started
+---
+
+## 🏗️ Backend Architecture
+
+The backend follows a **Model-Controller-Route (MVC)** pattern, separating concerns for scalability and maintainability.
+
+```mermaid
+graph TD
+    Client[Frontend Client] <-->|HTTP Requests| Server[Express Server]
+    
+    subgraph Backend
+    Server --> AuthMW[Auth Middleware]
+    AuthMW --> Router[API Routes]
+    
+    Router --> AuthC[Auth Controller]
+    Router --> BookC[Book Controller]
+    Router --> UserC[User Controller]
+    Router --> ListC[Reading List Controller]
+    
+    AuthC <--> UserM[User Model]
+    BookC <--> BookM[Book Model]
+    ListC <--> ListM[Reading List Model]
+    
+    UserM <--> DB[(MongoDB)]
+    BookM <--> DB
+    ListM <--> DB
+    end
+```
+
+---
+
+## 🗄️ Database Schema
+
+### Entity-Relationship Diagram
+
+```mermaid
+erDiagram
+    User ||--o{ ReadingList : "has"
+    User ||--o{ Review : "writes"
+    User ||--o{ CustomList : "creates"
+    User ||--|| User : "follows"
+    Book ||--o{ ReadingList : "is_in"
+    Book ||--o{ Review : "has"
+    Book ||--o{ CustomList : "includes"
+
+    User {
+        ObjectId _id
+        String name
+        String email
+        String password
+        String avatar
+    }
+
+    Book {
+        ObjectId _id
+        String title
+        String author
+        String genre
+        String coverImage
+        Number averageRating
+    }
+
+    ReadingList {
+        ObjectId user_id
+        ObjectId book_id
+        String status
+        Number progress
+        Array notes
+    }
+```
+
+### Model Details
+
+#### 1. User Model
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `name` | String | Full name of the user |
+| `email` | String | Unique email address |
+| `password` | String | Hashed password (Bcrypt) |
+| `avatar` | String | URL to profile picture |
+| `followers` | Array | References to other User IDs |
+| `following` | Array | References to other User IDs |
+
+#### 2. Book Model
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `title` | String | Book title (Indexed for search) |
+| `author` | String | Author name |
+| `genre` | String | Book genre |
+| `coverImage` | String | URL to cover image |
+| `averageRating` | Number | Cached average rating |
+| `totalRatings` | Number | Cached count of reviews |
+
+#### 3. ReadingList Model
+Links a **User** to a **Book** with personal tracking data.
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `user` | ObjectId | Reference to User |
+| `book` | ObjectId | Reference to Book |
+| `status` | Enum | `wishlist`, `reading`, `complete`, `dropped` |
+| `progress` | Number | Reading progress (0-100%) |
+| `notes` | Array | List of page-specific notes |
+| `dropReason` | String | Optional reason if status is 'dropped' |
+
+---
+
+## 🎮 Controllers & API Logic
+
+The backend logic is organized into focused controllers.
+
+| Controller | Responsibilities |
+| :--- | :--- |
+| **authController** | Handles Registration, Login, and fetching current user context. |
+| **bookController** | Manages global book catalog, searching, filtering, and fetching single book details. |
+| **readingListController** | Handles all user-specific book interactions (adding to list, updating progress, adding notes). |
+| **reviewController** | Manages creating, updating, and deleting reviews. Updates Book average ratings. |
+| **userController** | Handles profile updates (avatar, bio) and social features (follow/unfollow). |
+| **analyticsController** | Aggregates data for charts (e.g., books read per month). |
+
+### Logic Flow: Updating Reading Progress
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant API
+    participant DB
+
+    User->>Frontend: Updates Progress Slider
+    Frontend->>API: PUT /api/reading-list/{id}
+    Note right of Frontend: Payload: { progress: 75 }
+    
+    API->>DB: Find ReadingList Entry
+    alt Entry Exists
+        API->>DB: Update 'progress' field
+        API->>Frontend: Return Updated Entry
+        Frontend->>User: Show Success Toast
+    else Not Found
+        API->>Frontend: Return 404 Error
+    end
+```
+
+---
+
+## 🚀 Installation & Setup
 
 ### Prerequisites
-*   Node.js installed
-*   MongoDB installed or a MongoDB Atlas connection string
+*   Node.js (v14 or higher)
+*   MongoDB (Local or Atlas)
 
-### Installation
+### 1. Clone & Install
+```bash
+git clone <repository-url>
+cd book-buddy
 
-1.  **Clone the repository**
-    ```bash
-    git clone <repository-url>
-    cd book-buddy
-    ```
+# Install Backend
+cd backend
+npm install
 
-2.  **Install Backend Dependencies**
-    ```bash
-    cd backend
-    npm install
-    ```
+# Install Frontend
+cd ../frontend
+npm install
+```
 
-3.  **Install Frontend Dependencies**
-    ```bash
-    cd ../frontend
-    npm install
-    ```
+### 2. Environment Setup
+Create a `.env` file in the `backend` directory:
+```env
+PORT=3000
+MONGO_URI=mongodb://127.0.0.1:27017/bookbuddy
+JWT_SECRET=your_secure_random_string
+CLIENT_ORIGIN=http://localhost:5173
+```
 
-4.  **Environment Setup**
-    *   Create a `.env` file in the `backend` directory.
-    *   Add the following variables:
-        ```env
-        PORT=5000
-        MONGODB_URI=your_mongodb_connection_string
-        JWT_SECRET=your_jwt_secret_key
-        ```
+### 3. Run Application
+**Backend** (Runs on port 3000):
+```bash
+cd backend
+npm run dev
+```
 
-5.  **Run the Application**
-    *   Start the backend server:
-        ```bash
-        cd backend
-        npm run dev
-        ```
-    *   Start the frontend development server:
-        ```bash
-        cd frontend
-        npm run dev
-        ```
+**Frontend** (Runs on port 5173):
+```bash
+cd frontend
+npm run dev
+```
 
-6.  **Access the App**
-    *   Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal).
-
-## 📄 License
-
-This project is licensed under the MIT License.
+Visit `http://localhost:5173` to start using Book Buddy!

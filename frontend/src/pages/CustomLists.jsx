@@ -48,7 +48,12 @@ const CustomLists = () => {
       setSelectedBooks([]);
       setShowCreateForm(false);
       fetchLists();
+      setShowCreateForm(false);
+      fetchLists();
     } catch (error) {
+      if (error.response?.status === 409) {
+        alert(error.response.data.message);
+      }
       console.error('Error creating list:', error);
     }
   };
@@ -71,7 +76,11 @@ const CustomLists = () => {
         books: updatedBooks,
       });
       fetchLists();
+      fetchLists();
     } catch (error) {
+      if (error.response?.status === 409) {
+        alert(error.response.data.message);
+      }
       console.error('Error updating list:', error);
     }
   };
@@ -97,7 +106,7 @@ const CustomLists = () => {
       </div>
 
       {showCreateForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <div className="bg-white dark:bg-[#27272A] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 mb-8">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Create New List</h2>
           <form onSubmit={handleCreateList}>
             <div className="mb-4">
@@ -115,7 +124,7 @@ const CustomLists = () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Books:</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-60 overflow-y-auto p-3 border border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900/50">
                 {books.map((book) => (
-                  <label key={book._id} className="flex items-center gap-2 cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
+                  <label key={book._id} className="flex items-center gap-2 cursor-pointer p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors">
                     <input
                       type="checkbox"
                       value={book._id}
@@ -142,7 +151,7 @@ const CustomLists = () => {
         </div>
       )}
       {lists.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="text-center py-12 bg-zinc-50 dark:bg-[#27272A] rounded-lg border border-zinc-200 dark:border-zinc-800">
           <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">You haven't created any custom lists yet.</p>
           <button
             onClick={() => setShowCreateForm(true)}
@@ -181,7 +190,7 @@ const CustomListCard = ({ list, allBooks, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex flex-col h-full">
+    <div className="bg-white dark:bg-[#27272A] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 flex flex-col h-full">
       <div className="flex justify-between items-start mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
         {isEditing ? (
           <input

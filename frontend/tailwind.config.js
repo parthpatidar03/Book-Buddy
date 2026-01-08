@@ -8,27 +8,30 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Concrete Studio Palette
         primary: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
+          50: '#ecfdf5', // Emerald-50
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
         },
         dark: {
-          bg: '#1a202c',
-          card: '#2d3748',
-          text: '#f7fafc',
-          muted: '#a0aec0',
+          bg: '#18181B', // Zinc-950
+          card: '#27272A', // Zinc-800
+          text: '#FAFAFA', // Zinc-50
+          muted: '#A1A1AA', // Zinc-400
+          border: '#3F3F46', // Zinc-700
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
     },
   },

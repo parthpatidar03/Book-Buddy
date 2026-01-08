@@ -26,6 +26,33 @@ export const updateReadingGoal = async (req, res) => {
   }
 };
 
+// Update User Profile
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, bio, avatar } = req.body;
+    
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (bio !== undefined) updateData.bio = bio;
+    if (req.file) {
+      updateData.avatar = `${process.env.API_URL || 'http://localhost:3000'}/uploads/${req.file.filename}`;
+    } else if (avatar !== undefined) {
+      updateData.avatar = avatar;
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      updateData,
+      { new: true }
+    ).select('-password');
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // Follow a user
 export const followUser = async (req, res) => {
   try {

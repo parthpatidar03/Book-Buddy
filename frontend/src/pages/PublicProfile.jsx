@@ -84,12 +84,12 @@ const PublicProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 mb-8">
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 h-32"></div>
+      <div className="bg-white dark:bg-[#27272A] rounded-xl shadow-sm overflow-hidden border border-zinc-200 dark:border-zinc-800 mb-8">
+        <div className="bg-zinc-100 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 h-32"></div>
         <div className="px-8 pb-8">
           <div className="relative flex justify-between items-end -mt-12 mb-6">
             <div className="flex items-end gap-4">
-              <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-800 p-1 shadow-lg">
+              <div className="w-24 h-24 rounded-full bg-white dark:bg-[#27272A] p-1 shadow-sm">
                 <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl font-bold text-gray-500 dark:text-gray-400">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
@@ -149,7 +149,7 @@ const PublicProfile = () => {
           recentBooks
             .filter(item => item.book) // Filter out items where book is null
             .map((item) => (
-            <Link key={item._id} to={`/book/${item.book._id}`} className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex gap-4 hover:shadow-md transition-shadow">
+            <Link key={item._id} to={`/book/${item.book._id}`} className="bg-white dark:bg-[#27272A] p-4 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex gap-4 hover:shadow-md transition-shadow">
               <div className="w-16 h-24 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
                 <img src={defaultCover} alt={item.book.title} className="w-full h-full object-cover" />
               </div>

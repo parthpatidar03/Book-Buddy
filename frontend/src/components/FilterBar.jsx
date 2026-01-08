@@ -16,7 +16,6 @@ const Dropdown = ({
   const toggleRef = useRef(null);
   const listRef = useRef(null);
   const searchRef = useRef(null);
-  
   const idRef = useRef(`dropdown-${Math.random().toString(36).slice(2)}`);
   const [menuStyle, setMenuStyle] = useState({});
 
@@ -108,7 +107,7 @@ const Dropdown = ({
 
   const menu = (
     <div 
-      className="absolute z-50 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 rounded-xl shadow-xl overflow-hidden flex flex-col max-h-64" 
+      className="absolute z-50 bg-white dark:bg-[#27272A] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg overflow-hidden flex flex-col max-h-64" 
       style={menuStyle}
     >
       <div className="p-2 border-b border-gray-100 dark:border-gray-700">

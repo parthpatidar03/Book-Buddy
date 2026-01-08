@@ -22,11 +22,12 @@ const ReadingList = () => {
     }
   };
 
-  const handleStatusChange = async (itemId, newStatus, newFinishDate) => {
+  const handleStatusChange = async (itemId, newStatus, newFinishDate, newDropReason) => {
     try {
       const updateData = {};
       if (newStatus) updateData.status = newStatus;
       if (newFinishDate !== undefined) updateData.finishDate = newFinishDate;
+      if (newDropReason !== undefined) updateData.dropReason = newDropReason;
       
       await readingListAPI.update(itemId, updateData);
       fetchReadingList();
@@ -51,9 +52,10 @@ const ReadingList = () => {
       reading: [],
       wishlist: [],
       complete: [],
+      dropped: [],
     };
     items.forEach((item) => {
-      if (item.book) { // Only include items with valid book data
+      if (item.book && grouped[item.status]) { // Only include items with valid book data and valid status
         grouped[item.status].push(item);
       }
     });
@@ -109,7 +111,7 @@ const ReadingList = () => {
         )}
       </div>
       {items.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="text-center py-12 bg-zinc-50 dark:bg-[#27272A] rounded-lg border border-zinc-200 dark:border-zinc-800">
           <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">Your reading list is empty. Start adding books!</p>
           <Link to="/explore" className="btn btn-primary">
             Browse Books
@@ -170,6 +172,24 @@ const ReadingList = () => {
               </div>
             </section>
           )}
+
+          {grouped.dropped.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-4 flex items-center gap-2">
+                <span className="text-2xl">🚫</span> Dropped Books ({grouped.dropped.length})
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {grouped.dropped.map((item) => (
+                  <ReadingListItem
+                    key={item._id}
+                    item={item}
+                    onStatusChange={handleStatusChange}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       )}
     </div>
@@ -177,8 +197,24 @@ const ReadingList = () => {
 };
 
 const ReadingListItem = ({ item, onStatusChange, onRemove }) => {
+  const [dropReason, setDropReason] = useState(item.dropReason || '');
+  
+  // Sync state with prop when item.dropReason changes (e.g., after refresh)
+  useEffect(() => {
+    setDropReason(item.dropReason || '');
+  }, [item.dropReason]);
+  
+  const isDropped = item.status === 'dropped';
+  const borderColor = isDropped 
+    ? 'border-orange-200 dark:border-orange-700' 
+    : 'border-gray-200 dark:border-gray-700';
+  
+  const handleSaveReason = () => {
+    onStatusChange(item._id, item.status, undefined, dropReason);
+  };
+  
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 flex flex-col h-full transition-all hover:shadow-md">
+    <div className={`bg-white dark:bg-[#27272A] rounded-lg shadow-sm border ${borderColor} p-4 flex flex-col h-full transition-all hover:shadow-md`}>
       <div className="flex-1 mb-4">
         <Link to={`/book/${item.book._id}`} className="block group">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-1">
@@ -216,6 +252,26 @@ const ReadingListItem = ({ item, onStatusChange, onRemove }) => {
               // Update the finish date when changed
               onChange={(e) => onStatusChange(item._id, undefined, e.target.value)}
             />
+          </div>
+        )}
+        
+        {/* Only show the 'Drop Reason' textarea if the book status is 'dropped' */}
+        {item.status === 'dropped' && (
+          <div className="flex flex-col gap-2 text-sm">
+            <label className="text-orange-600 dark:text-orange-400 font-medium">Why did you drop this book?</label>
+            <textarea
+              className="bg-orange-50 dark:bg-orange-900/20 border border-orange-300 dark:border-orange-600 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2 resize-none"
+              placeholder="Optional: Too slow, didn't like the writing style, etc."
+              rows="2"
+              value={dropReason}
+              onChange={(e) => setDropReason(e.target.value)}
+            />
+            <button
+              onClick={handleSaveReason}
+              className="self-end px-4 py-1.5 bg-orange-600 hover:bg-orange-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              Save Reason
+            </button>
           </div>
         )}
       </div>

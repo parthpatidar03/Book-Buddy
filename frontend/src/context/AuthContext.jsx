@@ -1,3 +1,4 @@
+// AuthContext talks to the Server -> Gets Token -> Saves to LocalStorage -> Updates State.
 import { createContext, useState, useContext, useEffect } from 'react';
 import { authAPI } from '../services/api';
 
@@ -11,6 +12,7 @@ export const useAuth = () => {
   return context;
 };
 
+// finds a token and user data, it automatically sets the state variables using useEffect 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  // login function saves the received Token and User Data to localStorage (so they persist).
   const login = async (email, password) => {
     try {
       const response = await authAPI.login({ email, password });

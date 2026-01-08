@@ -5,27 +5,27 @@
 Create a `.env` file in the `Book Buddy/backend/` directory with the following content:
 
 ```env
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name?retryWrites=true&w=majority
-JWT_SECRET=your_super_secret_jwt_key_make_it_long_and_random_at_least_32_characters
+MONGO_URI=mongodb://127.0.0.1:27017/bookbuddy
+JWT_SECRET=your_super_secret_jwt_key
 PORT=3000
 CLIENT_ORIGIN=http://localhost:5173
 ```
 
-## How to Get MongoDB Atlas Connection String
+## Database Setup (Local MongoDB)
 
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Sign in or create an account
-3. Create a new cluster (or use existing)
-4. Click "Connect" on your cluster
-5. Choose "Connect your application"
-6. Copy the connection string
-7. Replace `<password>` with your database password
-8. Replace `<dbname>` with your database name (e.g., `bookbuddy`)
+1.  **Install MongoDB Compass & Server**: Download and install from [MongoDB Community Server](https://www.mongodb.com/try/download/community).
+2.  **Start MongoDB**: Ensure the MongoDB service is running on your machine.
+3.  **Connection String**: The default local connection string is `mongodb://127.0.0.1:27017/bookbuddy`. This will automatically create a database named `bookbuddy` when you start saving data.
 
-Example:
-```
-MONGO_URI=mongodb+srv://myuser:mypassword@cluster0.xxxxx.mongodb.net/bookbuddy?retryWrites=true&w=majority
-```
+## Database Setup (Cloud - Optional)
+
+If you prefer to use MongoDB Atlas (Cloud):
+1.  Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2.  Get your connection string and replace the `MONGO_URI` in `.env`.
+    Example:
+    ```
+    MONGO_URI=mongodb+srv://user:pass@cluster.net/bookbuddy?retryWrites=true&w=majority
+    ```
 
 ## How to Generate JWT Secret
 

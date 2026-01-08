@@ -9,8 +9,11 @@ const reviewSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
-
+// Ensure that each user can only review a specific book once
 reviewSchema.index({ user: 1, book: 1 }, { unique: true });
+// Performance Indexes
+reviewSchema.index({ book: 1 }); // Get all reviews for a book
+reviewSchema.index({ book: 1, createdAt: -1 }); // Get recent reviews for a book
 
 export default mongoose.model('Review', reviewSchema);
 

@@ -45,7 +45,7 @@ const MyReviews = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">My Reviews</h1>
       {reviews.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="text-center py-12 bg-zinc-50 dark:bg-[#27272A] rounded-lg border border-zinc-200 dark:border-zinc-800">
           <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">You haven't reviewed any books yet.</p>
           <Link to="/explore" className="btn btn-primary">
             Browse Books
@@ -54,7 +54,7 @@ const MyReviews = () => {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((review) => (
-            <div key={review._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex flex-col">
+            <div key={review._id} className="bg-white dark:bg-[#27272A] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 flex flex-col">
               <div className="flex-1 mb-4">
                 {review.book && review.book._id ? (
                   <Link to={`/book/${review.book._id}`} className="block group mb-3">

@@ -31,7 +31,7 @@ const ReadingProgress = ({ bookId, initialProgress, onProgressUpdate }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mt-4 max-w-md">
+    <div className="bg-white dark:bg-[#27272A] p-4 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 mt-4 max-w-md">
       <div className="flex justify-between items-center mb-3">
         <label htmlFor="progress-slider" className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Reading Progress

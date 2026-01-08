@@ -14,8 +14,8 @@ import CustomLists from './pages/CustomLists';
 import UserProfile from './pages/UserProfile';
 import PublicProfile from './pages/PublicProfile';
 import Analytics from './pages/Analytics';
-
 import ShootingStars from './components/ShootingStars';
+
 
 function App() {
   return (
@@ -36,7 +36,7 @@ function App() {
                   path="/reading-list"
                   element={
                     <ProtectedRoute>
-                      <ReadingList />
+                      <ReadingList />{/* This is the "children" */}
                     </ProtectedRoute>
                   }
                 />

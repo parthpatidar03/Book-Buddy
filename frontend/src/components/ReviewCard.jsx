@@ -36,7 +36,7 @@ const ReviewCard = ({ review, onDelete, canDelete = false }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-white dark:bg-[#27272A] rounded-lg p-4 border border-zinc-200 dark:border-zinc-800 shadow-sm">
       <div className="flex justify-between items-start mb-3">
         <div>
           <h4 className="font-semibold text-gray-900 dark:text-white">

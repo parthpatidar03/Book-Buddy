@@ -67,6 +67,23 @@ const Analytics = () => {
         </div>
       </div>
 
+      {/* Reading Behavior Report */}
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Reading Behavior</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="card">
+          <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Avg Time per Book</h3>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">{data.avgDaysToFinish} days</p>
+        </div>
+        <div className="card">
+          <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Completion Rate</h3>
+          <p className="text-3xl font-bold text-green-500 mt-2">{data.completionRate}%</p>
+        </div>
+        <div className="card">
+          <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">Drop-off Rate</h3>
+          <p className="text-3xl font-bold text-red-500 mt-2">{data.dropOffRate}%</p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Books per Month Chart */}
         <div className="card">

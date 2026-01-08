@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-
+// If the user IS logged in, renders the children. The children are whatever component we wrapped inside <ProtectedRoute>.
   return children;
 };
 

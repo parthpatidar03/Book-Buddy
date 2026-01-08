@@ -63,7 +63,7 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {readingList.map((item) => (
-              <div key={item._id} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 flex gap-4 transition-transform hover:-translate-y-1">
+              <div key={item._id} className="bg-white dark:bg-[#27272A] p-6 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 flex gap-4 transition-transform hover:-translate-y-1">
                 <div className="w-20 h-28 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
                   <img 
                     src={defaultCover} 

@@ -5,7 +5,7 @@ const ShootingStars = () => {
   const stars = Array.from({ length: 3 });
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden hidden dark:block">
+    <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden hidden dark:block">
       {stars.map((_, index) => {
         const top = Math.floor(Math.random() * 50) + '%'; // Top half of screen
         const left = Math.floor(Math.random() * 100) + '%';
@@ -16,6 +16,7 @@ const ShootingStars = () => {
           <span
             key={index}
             className="shooting-star"
+            
             style={{
               top,
               left,

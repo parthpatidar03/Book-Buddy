@@ -3,6 +3,7 @@ const StatusSelector = ({ value, onChange }) => {
     { value: 'wishlist', label: 'Wishlist' },
     { value: 'reading', label: 'Reading' },
     { value: 'complete', label: 'Complete' },
+    { value: 'dropped', label: 'Dropped' },
   ];
 
   return (

@@ -20,7 +20,8 @@ export const createCustomList = async (req, res) => {
     const list = await CustomList.create({ user: req.user._id, name, books });
     await list.populate('books');
     res.status(201).json(list);
-  } catch {
+  } catch (err) {
+    if (err.code === 11000) return res.status(409).json({ message: 'A list with this name already exists' });
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -42,7 +43,8 @@ export const updateCustomList = async (req, res) => {
     ).populate('books');
     if (!list) return res.status(404).json({ message: 'Custom list not found' });
     res.json(list);
-  } catch {
+  } catch (err) {
+    if (err.code === 11000) return res.status(409).json({ message: 'A list with this name already exists' });
     res.status(500).json({ message: 'Server error' });
   }
 };

@@ -74,12 +74,64 @@ export const getAnalytics = async (req, res) => {
       status: 'complete'
     });
 
+    // 5. Reading Behavior Stats
+    const behaviorStats = await ReadingList.aggregate([
+      { $match: { user: userId } },
+      {
+        $group: {
+          _id: null,
+          totalStarted: {
+            $sum: {
+              $cond: [{ $in: ["$status", ["reading", "complete", "dropped"]] }, 1, 0]
+            }
+          },
+          completed: {
+            $sum: { $cond: [{ $eq: ["$status", "complete"] }, 1, 0] }
+          },
+          dropped: {
+            $sum: { $cond: [{ $eq: ["$status", "dropped"] }, 1, 0] }
+          },
+          totalDuration: {
+            $sum: {
+              $cond: [
+                { $and: [{ $eq: ["$status", "complete"] }, { $ne: ["$startDate", null] }, { $ne: ["$finishDate", null] }] },
+                { $subtract: ["$finishDate", "$startDate"] },
+                0
+              ]
+            }
+          },
+          durationCount: {
+            $sum: {
+              $cond: [
+                { $and: [{ $eq: ["$status", "complete"] }, { $ne: ["$startDate", null] }, { $ne: ["$finishDate", null] }] },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      }
+    ]);
+
+    const stats = behaviorStats[0] || { totalStarted: 0, completed: 0, dropped: 0, totalDuration: 0, durationCount: 0 };
+    
+    // Calculate rates
+    const completionRate = stats.totalStarted ? Math.round((stats.completed / stats.totalStarted) * 100) : 0;
+    const dropOffRate = stats.totalStarted ? Math.round((stats.dropped / stats.totalStarted) * 100) : 0;
+    
+    // Calculate average days (convert ms to days)
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const avgDaysToFinish = stats.durationCount ? Math.round((stats.totalDuration / stats.durationCount) / msPerDay) : 0;
+
     res.json({
       booksPerMonth: formatBooksPerMonth(booksPerMonth),
       genreDistribution: genreDistribution.map(g => ({ name: g._id, value: g.count })),
       averageRating: ratingStats[0]?.averageRating || 0,
       totalReviews: ratingStats[0]?.totalReviews || 0,
-      totalRead
+      totalRead,
+      avgDaysToFinish,
+      completionRate,
+      dropOffRate
     });
 
   } catch (error) {

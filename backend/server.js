@@ -38,7 +38,10 @@ if (!process.env.MONGO_URI) {
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || '*' }));
+const clientOrigin = process.env.CLIENT_ORIGIN || '*';
+app.use(cors({
+  origin: clientOrigin === '*' ? '*' : [clientOrigin, 'http://localhost:5173', 'http://localhost:5174']
+}));
 app.use(express.json());
 
 // Serve static files

@@ -16,6 +16,7 @@ const BookDetails = () => {
   const { user } = useAuth();
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [deleting, setDeleting] = useState(false); // New state for delete operation
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
@@ -174,6 +175,19 @@ const BookDetails = () => {
     }
   };
 
+  const handleDeleteBook = async () => {
+    if (!window.confirm('Are you sure you want to delete this book? This action cannot be undone.')) return;
+    setDeleting(true);
+    try {
+      await booksAPI.delete(id);
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting book:', error);
+      setError(error.response?.data?.message || 'Failed to delete book');
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -231,6 +245,19 @@ const BookDetails = () => {
                   {book.description}
                 </p>
               </div>
+
+              {/* Admin Delete Button */}
+              {user?.role === 'admin' && (
+                <div className="mb-6">
+                  <button 
+                    onClick={handleDeleteBook} 
+                    disabled={deleting}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                  >
+                    {deleting ? 'Deleting...' : 'Delete Book'}
+                  </button>
+                </div>
+              )}
 
               {user && (
                 <>
@@ -332,7 +359,7 @@ const BookDetails = () => {
                   <ReviewCard
                     key={review._id}
                     review={review}
-                    canDelete={user && review.user?._id === user.id}
+                    canDelete={user && (review.user?._id === user.id || user.role === 'admin')}
                     onDelete={async (reviewId) => {
                       await reviewsAPI.delete(reviewId);
                       fetchReviews();

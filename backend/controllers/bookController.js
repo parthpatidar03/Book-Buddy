@@ -95,3 +95,31 @@ export const getBookById = async (req, res) => {
   }
 };
 
+// DELETE /api/books/:id - Delete a book (Admin only)
+export const deleteBook = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) return res.status(404).json({ message: 'Book not found' });
+
+    // Optional: Check if anyone has this in their reading list?
+    // For now, we'll allow deletion, but maybe we should cascade delete reading list items?
+    // Let's implement cascade delete for data integrity
+    
+    // 1. Delete all reading list entries for this book
+    const ReadingList = (await import('../models/ReadingList.js')).default;
+    await ReadingList.deleteMany({ book: req.params.id });
+
+    // 2. Delete all reviews for this book
+    const Review = (await import('../models/Review.js')).default;
+    await Review.deleteMany({ book: req.params.id });
+
+    // 3. Delete the book itself
+    await Book.findByIdAndDelete(req.params.id);
+
+    res.json({ message: 'Book deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

@@ -58,11 +58,18 @@ export const updateReview = async (req, res) => {
   }
 };
 
-// DELETE /api/reviews/:id (delete review, only by owner)
+// DELETE /api/reviews/:id (delete review, by owner or admin)
 export const deleteReview = async (req, res) => {
   try {
-    const deleted = await Review.findOneAndDelete({ _id: req.params.id, user: req.user._id });
-    if (!deleted) return res.status(404).json({ message: 'Review not found' });
+    const review = await Review.findById(req.params.id);
+    if (!review) return res.status(404).json({ message: 'Review not found' });
+
+    // Check ownership or admin role
+    if (review.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    await Review.findByIdAndDelete(req.params.id);
     res.json({ message: 'Review deleted' });
   } catch {
     res.status(500).json({ message: 'Server error' });

@@ -59,6 +59,11 @@ const Header = () => {
                   <Link to="/my-reviews" className={navLinkClass('/my-reviews')}>Reviews</Link>
                   <Link to="/custom-lists" className={navLinkClass('/custom-lists')}>Lists</Link>
                   <Link to="/analytics" className={navLinkClass('/analytics')}>Analytics</Link>
+                  {user.role === 'admin' && (
+                    <Link to="/admin" className={`text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 ${navLinkClass('/admin').split(' ').filter(c => !c.startsWith('text-')).join(' ')}`}>
+                      Admin
+                    </Link>
+                  )}
                 </>
               )}
             </div>

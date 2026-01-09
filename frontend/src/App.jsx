@@ -14,6 +14,7 @@ import CustomLists from './pages/CustomLists';
 import UserProfile from './pages/UserProfile';
 import PublicProfile from './pages/PublicProfile';
 import Analytics from './pages/Analytics';
+import AdminDashboard from './pages/AdminDashboard';
 import ShootingStars from './components/ShootingStars';
 
 
@@ -69,6 +70,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Analytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminDashboard />
                     </ProtectedRoute>
                   }
                 />

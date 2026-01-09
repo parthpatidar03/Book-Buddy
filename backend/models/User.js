@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   readingGoal: { type: Number, default: 0 },
   readingGoalType: { type: String, enum: ['yearly', 'monthly'], default: 'yearly' },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
   createdAt: { type: Date, default: Date.now }
 });
 

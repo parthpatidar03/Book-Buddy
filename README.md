@@ -4,6 +4,16 @@ Book Buddy is a comprehensive personal library management application designed t
 
 ## 🌟 Key Features
 
+### 🔐 Role-Based Access Control (RBAC) [NEW]
+*   **Admins**: 
+    *   Add new books to the global database via a dedicated dashboard.
+    *   Delete books from the system.
+    *   Moderate community reviews (delete irrelevant content).
+*   **Users**: 
+    *   Manage personal reading lists.
+    *   Write reviews.
+    *   View stats and profiles.
+
 ### 📖 Book Management
 *   **Browse & Discover**: Explore a vast collection of books with detailed information including covers, authors, genres, and descriptions.
 *   **Search & Filter**: Powerful full-text search and filtering by genre, year, and rating.
@@ -103,6 +113,7 @@ erDiagram
         String name
         String email
         String password
+        String role
         String avatar
     }
 
@@ -132,6 +143,7 @@ erDiagram
 | `name` | String | Full name of the user |
 | `email` | String | Unique email address |
 | `password` | String | Hashed password (Bcrypt) |
+| `role` | Enum | `user` or `admin` (Default: `user`) |
 | `avatar` | String | URL to profile picture |
 | `followers` | Array | References to other User IDs |
 | `following` | Array | References to other User IDs |

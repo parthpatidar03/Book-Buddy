@@ -4,7 +4,7 @@ Book Buddy is a comprehensive personal library management application designed t
 
 ## 🌟 Key Features
 
-### 🔐 Role-Based Access Control (RBAC) [NEW]
+### 🔐 Role-Based Access Control (RBAC)
 *   **Admins**: 
     *   Add new books to the global database via a dedicated dashboard.
     *   Delete books from the system.

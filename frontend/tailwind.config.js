@@ -27,10 +27,22 @@ export default {
           text: '#FAFAFA', // Zinc-50
           muted: '#A1A1AA', // Zinc-400
           border: '#3F3F46', // Zinc-700
+        },
+
+        gssoc: {
+          base: "#00020F",       // Main background
+          dark: "#00041F",       // Deep section/Footer
+          card: "#11152B",       // Card background
+          "card-border": "#24315B", // Card border
+          "text-primary": "#FFFFFF",
+          "text-secondary": "#A7ADBE",
+          primary: "#4C75FF",    // Brand primary
+          "primary-to": "#1A4FFF", // Gradient end
         }
       },
       fontFamily: {
-        sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Mulish"', 'sans-serif'],
+        serif: ['"Lora"', 'serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
     },

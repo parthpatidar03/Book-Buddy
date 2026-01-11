@@ -4,7 +4,7 @@ Book Buddy is a comprehensive personal library management application designed t
 
 ## 🌟 Key Features
 
-### 🔐 Role-Based Access Control (RBAC) [NEW]
+### 🔐 Role-Based Access Control (RBAC)
 *   **Admins**: 
     *   Add new books to the global database via a dedicated dashboard.
     *   Delete books from the system.
@@ -18,6 +18,7 @@ Book Buddy is a comprehensive personal library management application designed t
 *   **Browse & Discover**: Explore a vast collection of books with detailed information including covers, authors, genres, and descriptions.
 *   **Search & Filter**: Powerful full-text search and filtering by genre, year, and rating.
 *   **Book Details**: View comprehensive details including community reviews and average ratings.
+*   **AI Summary**: Instantly generate concise 3-point summaries for any book using OpenAI (GPT-3.5).
 
 ### 📝 Reading List & Tracking
 *   **Status Tracking**: Categorize books into **Reading**, **Wishlist**, **Completed**, or **Dropped**.
@@ -62,6 +63,7 @@ Book Buddy is a comprehensive personal library management application designed t
 | **Auth** | JWT | JSON Web Tokens for stateless authentication |
 | **Utilities** | PDFKit | Server-side PDF generation |
 | | Multer | Middleware for handling file uploads (avatars) |
+| | **HTML5 Canvas** | High-performance 2D rendering for the starry background |
 
 ---
 

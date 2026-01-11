@@ -43,7 +43,10 @@ const BookCard = ({ book }) => {
         to={`/book/${book._id}`} 
         className="card block h-full overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
       >
-        <div className="h-48 overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+        <div 
+        className="relative aspect-[2/3] overflow-hidden rounded-t-xl bg-gray-100 dark:bg-[#0B1021] group-hover:shadow-2xl transition-all duration-500 ease-out transform group-hover:perspective-[1000px] group-hover:[transform:rotateY(-5deg)_rotateX(2deg)_scale(1.02)]"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
           {/* Default Cover Image */}
           <img 
             src={defaultCover} 
@@ -55,7 +58,7 @@ const BookCard = ({ book }) => {
           {/* AI Button - Positioned absolute on top of the image */}
           <button
             onClick={handleSummarize}
-            className="absolute top-2 right-2 bg-white/90 dark:bg-gray-800/90 text-primary-600 dark:text-primary-400 p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform backdrop-blur-sm z-10 border border-primary-200 dark:border-primary-700"
+            className="absolute top-2 right-2 bg-white/90 dark:bg-gssoc-card/90 text-primary-600 dark:text-gssoc-primary p-1.5 rounded-full shadow-sm hover:scale-110 transition-transform backdrop-blur-sm z-10 border border-primary-200 dark:border-gssoc-card-border"
             title="AI Summarize"
           >
             {loading ? (
@@ -72,9 +75,9 @@ const BookCard = ({ book }) => {
         <div className="flex-1 p-4 flex flex-col relative">
            {/* Summary Overlay/Disclosure */}
            {summary && (
-            <div className="absolute inset-0 bg-white dark:bg-gray-800 z-20 p-4 text-sm overflow-y-auto animate-in fade-in slide-in-from-bottom-4">
+             <div className="absolute inset-0 bg-white dark:bg-gssoc-card z-20 p-4 text-sm overflow-y-auto animate-in fade-in slide-in-from-bottom-4">
               <div className="flex justify-between items-start mb-2">
-                <h4 className="font-bold text-primary-600 dark:text-primary-400">AI Summary</h4>
+                <h4 className="font-bold text-primary-600 dark:text-gssoc-primary">AI Summary</h4>
                 <button 
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSummary(null); }}
                   className="text-gray-400 hover:text-gray-600"
@@ -82,27 +85,27 @@ const BookCard = ({ book }) => {
                   ✕
                 </button>
               </div>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{summary}</p>
+              <p className="text-gray-700 dark:text-gssoc-text-secondary whitespace-pre-line">{summary}</p>
             </div>
            )}
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-1">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gssoc-text-primary mb-1 group-hover:text-primary-600 dark:group-hover:text-gssoc-primary transition-colors line-clamp-1">
             {book.title}
           </h3>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+          <p className="text-sm font-medium text-gray-600 dark:text-gssoc-text-secondary mb-2">
             by {book.author}
           </p>
           <div className="flex items-center gap-2 mb-3">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-gssoc-primary/10 dark:text-gssoc-primary">
               {book.genre}
             </span>
             {book.publicationYear && (
-              <span className="text-xs text-gray-500 dark:text-gray-500">
+              <span className="text-xs text-gray-500 dark:text-gssoc-text-secondary/60">
                 {book.publicationYear}
               </span>
             )}
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+          <p className="text-sm text-gray-600 dark:text-gssoc-text-secondary line-clamp-3">
             {book.description}
           </p>
         </div>

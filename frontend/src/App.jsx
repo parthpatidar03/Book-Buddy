@@ -16,6 +16,7 @@ import PublicProfile from './pages/PublicProfile';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
 import ShootingStars from './components/ShootingStars';
+import StarryBackground from './components/StarryBackground';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
+            <StarryBackground />
             <ShootingStars />
             <Header />
             <main>

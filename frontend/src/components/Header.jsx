@@ -33,21 +33,21 @@ const Header = () => {
 
   const isActive = (path) => location.pathname === path;
 
-  const navLinkClass = (path) => 
+  const navLinkClass = (path) =>
     `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
       isActive(path)
-        ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-100'
-        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+        ? 'bg-primary-100 text-primary-700 dark:bg-gssoc-primary/20 dark:text-gssoc-primary'
+        : 'text-gray-700 hover:bg-gray-100 dark:text-gssoc-text-secondary dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
     }`;
 
   return (
-    <header className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-white/20 dark:border-gray-700/50">
+    <header className="bg-white/70 dark:bg-gssoc-dark/90 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-white/20 dark:border-gssoc-card-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center gap-2">
               <span className="text-2xl">📚</span>
-              <span className="font-bold text-xl text-gray-900 dark:text-white">Book Buddy</span>
+              <span className="font-bold text-xl text-gray-900 dark:text-gssoc-text-primary">Book Buddy</span>
             </Link>
             
             <div className="hidden md:ml-6 md:flex md:space-x-4">
@@ -98,10 +98,10 @@ const Header = () => {
                 </button>
                 
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#27272A] rounded-md shadow-lg py-1 border border-zinc-200 dark:border-zinc-800 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gssoc-card rounded-md shadow-lg py-1 border border-zinc-200 dark:border-gssoc-card-border z-50">
                     <Link 
                       to="/profile" 
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gssoc-text-secondary hover:bg-gray-100 dark:hover:bg-white/5"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Profile

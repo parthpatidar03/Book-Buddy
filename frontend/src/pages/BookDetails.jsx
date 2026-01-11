@@ -206,7 +206,7 @@ const BookDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white dark:bg-[#27272A] rounded-xl shadow-sm overflow-hidden border border-zinc-200 dark:border-zinc-800">
+      <div className="bg-white dark:bg-gssoc-card rounded-xl shadow-sm overflow-hidden border border-zinc-200 dark:border-gssoc-card-border">
         <div className="p-8">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Cover Image */}
@@ -222,10 +222,10 @@ const BookDetails = () => {
 
             {/* Book Info */}
             <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gssoc-text-primary mb-2">
                 {book.title}
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-xl text-gray-600 dark:text-gssoc-text-secondary mb-4">
                 by {book.author}
               </p>
               
@@ -241,7 +241,7 @@ const BookDetails = () => {
               </div>
 
               <div className="prose dark:prose-invert max-w-none mb-8">
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p className="text-gray-700 dark:text-gssoc-text-secondary leading-relaxed">
                   {book.description}
                 </p>
               </div>
@@ -307,7 +307,7 @@ const BookDetails = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="bg-gray-50 dark:bg-gray-900/50 p-8 border-t border-gray-200 dark:border-gray-700">
+        <div className="bg-gray-50 dark:bg-gssoc-card/50 p-8 border-t border-gray-200 dark:border-gssoc-card-border">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             Reviews
           </h2>
@@ -315,7 +315,7 @@ const BookDetails = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Review Form */}
             {user && (
-              <div className="bg-white dark:bg-[#27272A] p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 h-fit">
+              <div className="bg-white dark:bg-gssoc-card p-6 rounded-lg shadow-sm border border-zinc-200 dark:border-gssoc-card-border h-fit">
                 <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Write a Review</h3>
                 <form onSubmit={handleSubmitReview} className="space-y-4">
                   <div>

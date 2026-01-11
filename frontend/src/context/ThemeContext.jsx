@@ -1,3 +1,5 @@
+//  Dark/Light Mode functionality for your entire application.
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
@@ -20,7 +22,7 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
-
+// custom hook to use the theme context in any component
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

@@ -1,3 +1,8 @@
+// The "Don't Repeat Yourself" (DRY) Principle
+// The "Single Responsibility" (SRP) Principle  
+// Single Point of Maintenance
+// Global Error Handling
+
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
@@ -18,7 +23,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
+  (error) => { // global error handling
     return Promise.reject(error);
   }
 );
@@ -26,7 +31,7 @@ api.interceptors.request.use(
 // Handle 401 errors (unauthorized)
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error) => { // global error handling 
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -105,6 +110,11 @@ export const usersAPI = {
 // Analytics API
 export const analyticsAPI = {
   get: () => api.get('/analytics'),
+};
+
+// Summary API
+export const summaryAPI = {
+  getSummary: (data) => api.post('/summary', data),
 };
 
 export default api;

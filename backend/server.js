@@ -17,8 +17,10 @@ import customListRoutes from './routes/customListRoutes.js';
 import recommendationRoutes from './routes/recommendationRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import summaryRoutes from './routes/summaryRoutes.js';
 // Import error handler middleware
 import errorHandler from './middleware/errorMiddleware.js';
+import passport from './config/passport.js'; // Import passport config
 
 dotenv.config();
 
@@ -56,6 +58,7 @@ app.use('/api/custom-lists', customListRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/summary', summaryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Book Buddy backend');

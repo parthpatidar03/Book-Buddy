@@ -12,8 +12,6 @@ dist
 dist-ssr
 *.local
 
-RECOMMENDATION_SYSTEM.md
-
 
 # Editor directories and files
 .vscode/*
@@ -26,5 +24,3 @@ RECOMMENDATION_SYSTEM.md
 *.sln
 *.sw?
 
-
-RECOMMENDATION_SYSTEM.md

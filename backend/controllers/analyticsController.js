@@ -82,6 +82,7 @@ export const getAnalytics = async (req, res) => {
           _id: null,
           totalStarted: {
             $sum: {
+               // It only counts 1 if the status is ONE of these three:
               $cond: [{ $in: ["$status", ["reading", "complete", "dropped"]] }, 1, 0]
             }
           },
@@ -94,16 +95,27 @@ export const getAnalytics = async (req, res) => {
           totalDuration: {
             $sum: {
               $cond: [
-                { $and: [{ $eq: ["$status", "complete"] }, { $ne: ["$startDate", null] }, { $ne: ["$finishDate", null] }] },
+                // sum of time (in milliseconds) you spent reading all your "completed" books.
+                {
+                  $and: [{ $eq: ["$status", "complete"] },
+                  { $ne: ["$startDate", null] },// <--- STRICT CHECK: Must have Start Date
+                  { $ne: ["$finishDate", null] }]// <--- STRICT CHECK: Must have Finish Date  
+                },
                 { $subtract: ["$finishDate", "$startDate"] },
                 0
-              ]
+              ]   
             }
           },
+
+          // number of books that resulted in a completed status  
           durationCount: {
             $sum: {
               $cond: [
-                { $and: [{ $eq: ["$status", "complete"] }, { $ne: ["$startDate", null] }, { $ne: ["$finishDate", null] }] },
+                {
+                  $and: [{ $eq: ["$status", "complete"] },
+                  { $ne: ["$startDate", null] },// <--- STRICT CHECK: Must have Start Date
+                  { $ne: ["$finishDate", null] }]
+                },
                 1,
                 0
               ]
@@ -114,11 +126,11 @@ export const getAnalytics = async (req, res) => {
     ]);
 
     const stats = behaviorStats[0] || { totalStarted: 0, completed: 0, dropped: 0, totalDuration: 0, durationCount: 0 };
-    
+
     // Calculate rates
     const completionRate = stats.totalStarted ? Math.round((stats.completed / stats.totalStarted) * 100) : 0;
     const dropOffRate = stats.totalStarted ? Math.round((stats.dropped / stats.totalStarted) * 100) : 0;
-    
+
     // Calculate average days (convert ms to days)
     const msPerDay = 1000 * 60 * 60 * 24;
     const avgDaysToFinish = stats.durationCount ? Math.round((stats.totalDuration / stats.durationCount) / msPerDay) : 0;

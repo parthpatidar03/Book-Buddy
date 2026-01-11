@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String }, // Password not required for Google Auth
+  googleId: { type: String, unique: true, sparse: true }, // Sparse allows multiple nulls
   bio: { type: String, default: '' },
   avatar: { type: String, default: '' },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

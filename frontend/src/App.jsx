@@ -25,7 +25,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
+          <div className="min-h-screen bg-[#FDFBF7] dark:bg-transparent text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
             <StarryBackground />
             <ShootingStars />
             <Header />

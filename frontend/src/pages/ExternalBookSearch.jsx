@@ -19,13 +19,13 @@ const ExternalBookSearch = () => {
   }, [query]);
 
   const fetchBooks = async (searchTerm) => {
-    setLoading(true);
+    setLoading(true); // 1. Start loading spinner
     try {
       const response = await booksAPI.searchExternal({ search: searchTerm });
       setBooks(response.data.results || []);
     } catch (error) {
       console.error('Search failed:', error);
-    } finally {
+    } finally { // code that will ALWAYS run, no matter what happened before it.
       setLoading(false);
     }
   };

@@ -58,7 +58,7 @@ const Home = () => {
             Discover Your Next <span className="text-primary-600 dark:text-primary-400">Favorite Book</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Explore our vast collection of public domain books. Track your reading journey, find hidden gems, and join our community of book lovers.
+            Explore our vast collection of public domain books. Track your reading journey, connect with other readers, and keep reading.
           </p>
           
           <div className="w-full max-w-2xl mx-auto transform transition-all hover:scale-105 duration-300">

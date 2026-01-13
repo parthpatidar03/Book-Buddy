@@ -13,11 +13,51 @@ export const getReadingList = async (req, res) => {
 };
 
 // POST /api/reading-list (protected)
+// POST /api/reading-list (protected)
 export const addToReadingList = async (req, res) => {
   try {
-    const { book, status, finishDate } = req.body;
-    const data = { user: req.user._id, book, status };
-    
+    const { book: bookId, status, finishDate, externalId, title, author, description, coverImage, publicationYear, genre } = req.body;
+
+    let finalBookId = bookId;
+
+    // Handle External Book Import
+    if (externalId) {
+      const Book = (await import('../models/Book.js')).default;
+
+      // 1. Try to find existing copy
+      let existingBook = await Book.findOne({ externalId: externalId.toString() });
+
+      if (!existingBook) {
+        // 2. If not found, create it
+        try {
+          existingBook = await Book.create({
+            title: title || 'Unknown Title',
+            author: author || 'Unknown Author',
+            description: description || 'No description available.',
+            genre: genre || 'Classic',
+            publicationYear: publicationYear ? parseInt(publicationYear) : undefined,
+            coverImage: coverImage,
+            externalId: externalId.toString(),
+            source: 'gutendex'
+          });
+        } catch (createError) {
+          // Handle race condition where book might have been created by another request in parallel
+          if (createError.code === 11000) {
+            existingBook = await Book.findOne({ externalId: externalId.toString() });
+          } else {
+            throw createError;
+          }
+        }
+      }
+      finalBookId = existingBook._id;
+    }
+
+    if (!finalBookId) {
+      return res.status(400).json({ message: 'Book ID or External Book Data required' });
+    }
+
+    const data = { user: req.user._id, book: finalBookId, status };
+
     if (finishDate) {
       data.finishDate = finishDate;
     } else if (status === 'complete') {
@@ -29,6 +69,7 @@ export const addToReadingList = async (req, res) => {
     res.status(201).json(item);
   } catch (err) {
     if (err.code === 11000) return res.status(409).json({ message: 'Book already in your list' });
+    console.error('Add to reading list error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -38,14 +79,14 @@ export const updateReadingStatus = async (req, res) => {
   try {
     const { status, finishDate, dropReason } = req.body;
     const updateData = { status };
-    
+
     // Handle dropReason - set it when status is 'dropped', clear it otherwise
     if (status === 'dropped' && dropReason !== undefined) {
       updateData.dropReason = dropReason;
     } else if (status !== 'dropped') {
       updateData.dropReason = null; // Clear dropReason when changing away from dropped status
     }
-    
+
     // If finishDate is provided (even if null), update it.
     // This allows users to manually set the date they finished a book.
     if (finishDate !== undefined) {
@@ -58,7 +99,7 @@ export const updateReadingStatus = async (req, res) => {
       // Simple logic: If switching to complete and no date given, set to now.
       updateData.finishDate = Date.now();
     }
-    
+
     const item = await ReadingList.findOneAndUpdate(
       { _id: req.params.id, user: req.user._id },
       updateData,
@@ -87,7 +128,7 @@ export const updateProgress = async (req, res) => {
   try {
     const { progress } = req.body;
     let update = { progress };
-    
+
     // Auto-complete if progress is 100
     if (progress === 100) {
       update.status = 'complete';
@@ -163,7 +204,7 @@ export const exportReadingList = async (req, res) => {
       const { Parser } = await import('json2csv');
       const json2csvParser = new Parser();
       const csv = json2csvParser.parse(data);
-      
+
       res.header('Content-Type', 'text/csv');
       res.attachment('reading-history.csv');
       return res.send(csv);
@@ -173,7 +214,7 @@ export const exportReadingList = async (req, res) => {
 
       res.header('Content-Type', 'application/pdf');
       res.attachment('reading-history.pdf');
-      
+
       doc.pipe(res);
 
       // Header
@@ -188,32 +229,32 @@ export const exportReadingList = async (req, res) => {
 
         // Book Title with Numbering
         doc.fontSize(14).font('Helvetica-Bold').fillColor('black').text(`${index + 1}. ${item.Title}`, startX, doc.y);
-        
+
         // Author
         doc.fontSize(11).font('Helvetica-Oblique').text(`by ${item.Author}`, startX, doc.y);
         doc.moveDown(0.3);
 
         // Details Line 1: Status & Progress
         const currentY = doc.y;
-        
+
         doc.fontSize(9).font('Helvetica-Bold').text('Status:', startX, currentY);
         doc.font('Helvetica').text(item.Status, startX + 40, currentY);
-        
+
         doc.font('Helvetica-Bold').text('Progress:', startX + 120, currentY);
         doc.font('Helvetica').text(item.Progress, startX + 170, currentY);
 
         doc.text('', startX, currentY + 12); // Move down manually
-        
+
         // Details Line 2: Dates
         doc.font('Helvetica').fillColor('#555555');
         doc.text(`Added: ${item['Added At']} | Started: ${item['Start Date']} | Finished: ${item['Finish Date']}`, startX, doc.y);
-        
+
         doc.moveDown(0.8);
-        
+
         // Separator
         doc.strokeColor('#e0e0e0').lineWidth(0.5).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
         doc.moveDown(0.8);
-        
+
         // Reset color
         doc.fillColor('black');
       });
@@ -247,7 +288,7 @@ export const exportBookNotes = async (req, res) => {
 
     res.header('Content-Type', 'application/pdf');
     res.attachment(`${item.book.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_notes.pdf`);
-    
+
     doc.pipe(res);
 
     // Header
@@ -259,15 +300,15 @@ export const exportBookNotes = async (req, res) => {
 
     // Notes
     doc.fillColor('black');
-    
+
     item.notes.forEach((note, index) => {
       // Note Box Background (Simulated with rectangle)
       const startY = doc.y;
-      
+
       // Note Content
       doc.fontSize(12).font('Helvetica').text(note.text, { align: 'left' });
       doc.moveDown(0.5);
-      
+
       // Metadata (Date & Page)
       doc.fontSize(9).font('Helvetica-Oblique').fillColor('#666666');
       let metaText = `${new Date(note.createdAt).toLocaleDateString()}`;
@@ -275,11 +316,11 @@ export const exportBookNotes = async (req, res) => {
         metaText += ` | Page ${note.page}`;
       }
       doc.text(metaText);
-      
+
       doc.moveDown(1);
       doc.strokeColor('#e0e0e0').lineWidth(0.5).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
       doc.moveDown(1);
-      
+
       doc.fillColor('black');
     });
 

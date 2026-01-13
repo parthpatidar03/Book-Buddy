@@ -7,6 +7,9 @@ const bookSchema = new mongoose.Schema({
   description: { type: String, required: true },
   publicationYear: { type: Number },
   coverImage: { type: String },
+  // External API Support
+  externalId: { type: String, unique: true, sparse: true }, // Store Gutenberg ID here
+  source: { type: String, default: 'local' }, // 'local' or 'gutendex'
   averageRating: { type: Number, default: 0 },
   totalRatings: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now }

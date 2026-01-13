@@ -53,6 +53,7 @@ const Header = () => {
             <div className="hidden md:ml-6 md:flex md:space-x-4">
               <Link to="/" className={navLinkClass('/')}>Home</Link>
               <Link to="/explore" className={navLinkClass('/explore')}>Explore</Link>
+              <Link to="/search" className={navLinkClass('/search')}>Search</Link>
               {user && (
                 <>
                   <Link to="/reading-list" className={navLinkClass('/reading-list')}>My Books</Link>

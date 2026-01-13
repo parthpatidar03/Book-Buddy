@@ -53,6 +53,7 @@ export const booksAPI = {
   getById: (id) => api.get(`/books/${id}`),
   create: (data) => api.post('/books', data),
   delete: (id) => api.delete(`/books/${id}`),
+  searchExternal: (params) => api.get('/books/external', { params }),
 };
 
 // Reading List API

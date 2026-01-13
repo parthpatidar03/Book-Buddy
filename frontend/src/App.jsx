@@ -15,6 +15,7 @@ import UserProfile from './pages/UserProfile';
 import PublicProfile from './pages/PublicProfile';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
+import ExternalBookSearch from './pages/ExternalBookSearch';
 import ShootingStars from './components/ShootingStars';
 import StarryBackground from './components/StarryBackground';
 
@@ -31,6 +32,7 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/search" element={<ExternalBookSearch />} />
                 <Route path="/explore" element={<BookCatalog />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

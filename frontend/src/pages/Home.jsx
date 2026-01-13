@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { readingListAPI, booksAPI } from '../services/api';
 import BookCard from '../components/BookCard';
+import SearchBar from '../components/SearchBar';
 import Recommendations from '../components/Recommendations';
 import { useAuth } from '../context/AuthContext';
 
@@ -50,7 +51,27 @@ const Home = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-      {/* ... Hero Section ... */}
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-32 flex flex-col items-center text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 mb-6 tracking-tight">
+            Discover Your Next <span className="text-primary-600 dark:text-primary-400">Favorite Book</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Explore our vast collection of public domain books. Track your reading journey, find hidden gems, and join our community of book lovers.
+          </p>
+          
+          <div className="w-full max-w-2xl mx-auto transform transition-all hover:scale-105 duration-300">
+             <SearchBar 
+              onSearch={(term) => window.location.href = `/search?q=${encodeURIComponent(term)}`} 
+              placeholder="Search for books..." 
+              instantSearch={false}
+            />
+          </div>
+        </div>
+        
+        {/* Decorative background elements can go here if needed, but StarryBackground handles most of it */}
+      </section>
 
       {/* Currently Reading Section */}
       {user && readingList.length > 0 && (

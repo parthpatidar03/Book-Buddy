@@ -18,6 +18,7 @@ Book Buddy is a comprehensive personal library management application designed t
 *   **Browse & Discover**: Explore a vast collection of books with detailed information including covers, authors, genres, and descriptions.
 *   **Search & Filter**: Powerful full-text search and filtering by genre, year, and rating.
 *   **Book Details**: View comprehensive details including community reviews and average ratings.
+*   **External Search**: Search the global public domain library (via Gutendex) to find and explore books outside the local catalog.
 *   **AI Summary**: Instantly generate concise 3-point summaries for any book using OpenAI (GPT-3.5).
 
 ### 📝 Reading List & Tracking
@@ -182,6 +183,7 @@ The backend logic is organized into focused controllers.
 | :--- | :--- |
 | **authController** | Handles Registration, Login, and fetching current user context. |
 | **bookController** | Manages global book catalog, searching, filtering, and fetching single book details. |
+| **externalBookController** | Handles searching for books from the external Gutendex API (Public Domain). |
 | **readingListController** | Handles all user-specific book interactions (adding to list, updating progress, adding notes). |
 | **reviewController** | Manages creating, updating, and deleting reviews. Updates Book average ratings. |
 | **userController** | Handles profile updates (avatar, bio) and social features (follow/unfollow). |

@@ -39,12 +39,12 @@ Book Buddy is a comprehensive personal library management application designed t
 ### 📸 Screenshots
 
 <div align="center">
-  <img src="assets/images/Screenshot%20(631).png" width="45%" alt="Application Screenshot 1" />
-  <img src="assets/images/Screenshot%20(632).png" width="45%" alt="Application Screenshot 2" />
-  <img src="assets/images/Screenshot%20(633).png" width="45%" alt="Application Screenshot 3" />
-  <img src="assets/images/Screenshot%20(634).png" width="45%" alt="Application Screenshot 4" />
-  <img src="assets/images/Screenshot%20(635).png" width="45%" alt="Application Screenshot 5" />
-  <img src="assets/images/Screenshot%20(636).png" width="45%" alt="Application Screenshot 6" />
+  <img src="assets/images/Screenshot%20(671).png" width="45%" alt="Application Screenshot 1" />
+  <img src="assets/images/Screenshot%20(672).png" width="45%" alt="Application Screenshot 2" />
+  <img src="assets/images/Screenshot%20(673).png" width="45%" alt="Application Screenshot 3" />
+  <img src="assets/images/Screenshot%20(674).png" width="45%" alt="Application Screenshot 4" />
+  <img src="assets/images/Screenshot%20(675).png" width="45%" alt="Application Screenshot 5" />
+  <img src="assets/images/Screenshot%20(676).png" width="45%" alt="Application Screenshot 6" />
 </div>
 
 ---
